@@ -21,7 +21,7 @@ for i in range(10):
     temperature = str(soup.find(id = 'temperature'))
     
     while(humidity == '<span id="humidity">--</span>' or temperature == '<span id="temperature">--</span>'):
-        time.sleep(5)
+        time.sleep(4)
 
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
@@ -34,4 +34,4 @@ for i in range(10):
 
     print("Humidity is: ",humidity[0])
     print("Temperature is: ",temperature[0])
-    time.sleep(5)   # Measures in secs.
+    time.sleep(600)   # Measures in secs.
