@@ -27,7 +27,6 @@ public class DashboardForSensorData {
         
         Humidity[SampleTime][HumIndex] = Double.parseDouble(stLine.substring(14));
     }
-    
     public static void main(String[] args) throws FileNotFoundException, IOException{
         try{
             File file = new File("data.txt");
@@ -36,7 +35,7 @@ public class DashboardForSensorData {
             
             while(( stLine = Br.readLine()) != null){
                 
-                if(stLine.matches("../..")){    //regex
+                if(stLine.matches("../..")){
                     
                     SampleTime++;   // Index για το δείγμα.
                     TemIndex = 0;
@@ -63,7 +62,7 @@ public class DashboardForSensorData {
             System.out.println("ΛΑΘΟΣ PATH!");
         }
         
-        for (int i =0; i<SampleTime;i++){       //Ανά δείγμα 1γραμμή, ανά μέρα 2γραμμές. Κάθε γραμμή αποτελείται από 10 μετρήσεις (δεν ενδιαφέρει ο χρόνος μέτρησεις, προς το παρόν).
+        for (int i =0; i<SampleTime;i++){
             for (int j=0; j<10;j++){
                 System.out.println("Humidity is: "+Humidity[i][j]);
                 System.out.println("Temperature is: "+Temperature[i][j]);
