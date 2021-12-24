@@ -69,6 +69,7 @@ public class DashboardForSensorData {
                 
             }
         }
+        dashboardforsensordata.mainApp.main(args);
     }
     
 }

@@ -4,6 +4,7 @@
  */
 package project.login;
 
+import dashboardforsensordata.mainApp;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -198,6 +199,7 @@ public class login extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         /*try {
             Save.loadUser(search);
         } catch (ClassNotFoundException ex) {
