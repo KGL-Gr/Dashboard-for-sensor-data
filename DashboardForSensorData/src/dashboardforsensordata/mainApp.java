@@ -1,6 +1,9 @@
 package dashboardforsensordata;
 
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +13,7 @@ import static java.lang.String.valueOf;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
  * @author kgl
  */
 public class mainApp extends javax.swing.JFrame {
+
     File file;
     int ChoiceTracer=0;                             // Side Nav user selection Trace.
     int TemIndex = 0;                               // Has to be here to allow FillTemp, I don't want to keep track of more stuff to the functions.
@@ -143,9 +148,9 @@ public class mainApp extends javax.swing.JFrame {
         }
     }
     
-    
+    CardLayout card;
     public mainApp() throws IOException {
-        
+
         initComponents();
         
         //Some work for the DataForm. It should be removed. Also, scroll and border need to be better..
@@ -160,20 +165,21 @@ public class mainApp extends javax.swing.JFrame {
         jTable1.setForeground(Color.BLACK);
         
         jScrollPane1.getViewport().setOpaque(false);
+        card = (CardLayout)(cardLayouts.getLayout());
         
     }
     
     
     public void setMAIN(JComponent comp){
         System.out.println("HI");
-        GradientMAIN.removeAll(); 
-        GradientMAIN.add(comp);
+        //===============================Not sure what they do if its important put them back in but they kinda mess with the button collors
+        //GradientMAIN.removeAll(); 
+        //GradientMAIN.add(comp);
         System.out.println("HI");
         
     }
     
     public void SelectionFromLeftNav(int key){
-        
         if(key!=ChoiceTracer){
             switch(key){
                 case 0 -> {
@@ -215,6 +221,7 @@ public class mainApp extends javax.swing.JFrame {
                 default -> System.out.println("Problima");   
             }
         }
+        
     }
     
     @SuppressWarnings("unchecked")
@@ -236,8 +243,13 @@ public class mainApp extends javax.swing.JFrame {
         ExitLabel = new javax.swing.JLabel();
         PresentPanel = new javax.swing.JPanel();
         GradientMAIN = new keeptoo.KGradientPanel();
+        cardLayouts = new javax.swing.JPanel();
+        DashboardPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        SettingsPanel = new javax.swing.JPanel();
+        StatisticPanel = new javax.swing.JPanel();
+        DataPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -422,15 +434,25 @@ public class mainApp extends javax.swing.JFrame {
         getContentPane().add(LeftNav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 900));
 
         PresentPanel.setBackground(new java.awt.Color(254, 254, 254));
+        PresentPanel.setOpaque(false);
         PresentPanel.setLayout(new java.awt.BorderLayout());
 
         GradientMAIN.setkEndColor(new java.awt.Color(69, 69, 209));
         GradientMAIN.setkGradientFocus(2000);
         GradientMAIN.setkStartColor(new java.awt.Color(23, 23, 69));
         GradientMAIN.setkTransparentControls(false);
+        GradientMAIN.setMinimumSize(new java.awt.Dimension(1600, 900));
+        GradientMAIN.setPreferredSize(new java.awt.Dimension(1600, 900));
+        GradientMAIN.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        PresentPanel.add(GradientMAIN, java.awt.BorderLayout.CENTER);
+
+        cardLayouts.setLayout(new java.awt.CardLayout());
+
+        DashboardPanel.setBackground(new java.awt.Color(255, 255, 102));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setOpaque(false);
         jScrollPane1.setForeground(new Color(0,0,0,255));
         System.out.println(jScrollPane1.isOpaque());
 
@@ -458,24 +480,65 @@ public class mainApp extends javax.swing.JFrame {
         System.out.println("jTable"+jTable1.isOpaque());
         jScrollPane1.setViewportView(jTable1);
 
-        javax.swing.GroupLayout GradientMAINLayout = new javax.swing.GroupLayout(GradientMAIN);
-        GradientMAIN.setLayout(GradientMAINLayout);
-        GradientMAINLayout.setHorizontalGroup(
-            GradientMAINLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(GradientMAINLayout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(337, Short.MAX_VALUE))
+        javax.swing.GroupLayout DashboardPanelLayout = new javax.swing.GroupLayout(DashboardPanel);
+        DashboardPanel.setLayout(DashboardPanelLayout);
+        DashboardPanelLayout.setHorizontalGroup(
+            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1370, Short.MAX_VALUE)
         );
-        GradientMAINLayout.setVerticalGroup(
-            GradientMAINLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(GradientMAINLayout.createSequentialGroup()
-                .addGap(135, 135, 135)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(247, Short.MAX_VALUE))
+        DashboardPanelLayout.setVerticalGroup(
+            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
         );
 
-        PresentPanel.add(GradientMAIN, java.awt.BorderLayout.CENTER);
+        cardLayouts.add(DashboardPanel, "DashboardCard");
+
+        SettingsPanel.setBackground(new java.awt.Color(255, 153, 153));
+
+        javax.swing.GroupLayout SettingsPanelLayout = new javax.swing.GroupLayout(SettingsPanel);
+        SettingsPanel.setLayout(SettingsPanelLayout);
+        SettingsPanelLayout.setHorizontalGroup(
+            SettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1370, Short.MAX_VALUE)
+        );
+        SettingsPanelLayout.setVerticalGroup(
+            SettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 912, Short.MAX_VALUE)
+        );
+
+        cardLayouts.add(SettingsPanel, "SettingsCard");
+
+        StatisticPanel.setBackground(new java.awt.Color(153, 255, 204));
+
+        javax.swing.GroupLayout StatisticPanelLayout = new javax.swing.GroupLayout(StatisticPanel);
+        StatisticPanel.setLayout(StatisticPanelLayout);
+        StatisticPanelLayout.setHorizontalGroup(
+            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1370, Short.MAX_VALUE)
+        );
+        StatisticPanelLayout.setVerticalGroup(
+            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 912, Short.MAX_VALUE)
+        );
+
+        cardLayouts.add(StatisticPanel, "StatisticCard");
+
+        DataPanel.setBackground(new java.awt.Color(255, 102, 102));
+
+        javax.swing.GroupLayout DataPanelLayout = new javax.swing.GroupLayout(DataPanel);
+        DataPanel.setLayout(DataPanelLayout);
+        DataPanelLayout.setHorizontalGroup(
+            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1370, Short.MAX_VALUE)
+        );
+        DataPanelLayout.setVerticalGroup(
+            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 912, Short.MAX_VALUE)
+        );
+
+        cardLayouts.add(DataPanel, "DataCard");
+
+        PresentPanel.add(cardLayouts, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(PresentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 1370, 900));
 
@@ -496,22 +559,30 @@ public class mainApp extends javax.swing.JFrame {
 
     private void SettingsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SettingsButtonMousePressed
         // TODO add your handling code here:
+        card.show(cardLayouts, "SettingsCard");
         SelectionFromLeftNav(3);
+        
     }//GEN-LAST:event_SettingsButtonMousePressed
 
     private void StatisticsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StatisticsButtonMousePressed
         // TODO add your handling code here:
+        card.show(cardLayouts, "StatisticCard");
         SelectionFromLeftNav(2);
+        
     }//GEN-LAST:event_StatisticsButtonMousePressed
 
     private void DataButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DataButtonMousePressed
         // TODO add your handling code here:
+        //-------------------------------------------------------------------------------------------------------
+        card.show(cardLayouts, "DataCard");
+      
         SelectionFromLeftNav(1);
     }//GEN-LAST:event_DataButtonMousePressed
 
     private void DashboardButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardButtonMousePressed
         // TODO add your handling code here:
         SelectionFromLeftNav(0);
+        card.show(cardLayouts , "DashboardCard");
     }//GEN-LAST:event_DashboardButtonMousePressed
     
     public static void main(String args[]) {
@@ -520,6 +591,7 @@ public class mainApp extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -546,14 +618,17 @@ public class mainApp extends javax.swing.JFrame {
                 Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AppName;
     private rojerusan.RSButtonPane DashboardButton;
     private javax.swing.JLabel DashboardLabel;
+    private javax.swing.JPanel DashboardPanel;
     private rojerusan.RSButtonPane DataButton;
     private javax.swing.JLabel DataLabel;
+    private javax.swing.JPanel DataPanel;
     private rojerusan.RSButtonPane ExitButton;
     private javax.swing.JLabel ExitLabel;
     private keeptoo.KGradientPanel GradientMAIN;
@@ -561,9 +636,12 @@ public class mainApp extends javax.swing.JFrame {
     private javax.swing.JPanel PresentPanel;
     private rojerusan.RSButtonPane SettingsButton;
     private javax.swing.JLabel SettingsLabel;
+    private javax.swing.JPanel SettingsPanel;
+    private javax.swing.JPanel StatisticPanel;
     private rojerusan.RSButtonPane StatisticsButton;
     private javax.swing.JLabel StatisticsLabel;
     private javax.swing.JLabel Welcome_userLabe;
+    private javax.swing.JPanel cardLayouts;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
