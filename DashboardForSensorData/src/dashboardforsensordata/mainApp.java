@@ -1,9 +1,8 @@
 package dashboardforsensordata;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,34 +10,57 @@ import java.io.FileReader;
 import java.io.IOException;
 import static java.lang.String.valueOf;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 /**
- * DataToTable : CAUTION! WE WANT THAT TO RUN 1 TIME! We 'll what we can do for >1 times, IF we have extra options for the user..
- * FillTemp : Fills the array for temperature. 
- * FillHum  : Fills the array for humidity.
- * ReadData : Will read the data from the file, calls the functions above.
- * ListData : Fills the an ArrayList with StructuredData objects. ArrayLists can do the job for this amount of data.
- * setMAIN  : Clears and Shows the next Form, MUST be called from an event listener! HAS ISSUES.
- * SelectionFromLeftNav: Efficient as it is, not as an event handler with an interface.
+ * DataToTable          : CAUTION! WE WANT THAT TO RUN 1 TIME! We 'll what we can do for >1 times, IF we have extra options for the user..
+ * FillTemp             : Fills the array for temperature. 
+ * FillHum              : Fills the array for humidity.
+ * ReadData             : Will read the data from the file, calls the functions above.
+ * ListData             : Fills the an ArrayList with StructuredData objects. ArrayLists can do the job for this amount of data.
+ * ListData(int k)      : Will run only for the linegraphs. k is the value of the respective slider.
+ * SelectionFromLeftNav : Efficient as it is, not as an event handler with an interface.
+ * showHumPieChart      : Will display (,20] , (20,45] , (45,65] , (65,90] , (90,) as Very Low, Low, OK, High, Very High respectively.
+ * showTemPieChart      : Will display (,4] , (4,8] , (8,12] , (12,16] , (16,) as Very Low, Low, OK, High, Very High respectively.
+ * showBarChart         : Will display day average for Temperature&Humidity sample values.
+ * showLineTempChart    : Will display a linechart for the temperature values, also it has slider.
+ * showLineHumChart     : Will display a linechart for the humidity values, also it has slider.
  * 
  * @author kgl
  */
-public class mainApp extends javax.swing.JFrame {
 
-    File file;
-    int ChoiceTracer=0;                             // Side Nav user selection Trace.
+public class mainApp extends javax.swing.JFrame {
+    
+    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    Color Default = new Color(23, 23, 69);          // Commonly used.
+    CardLayout card;                                // Card Layout.
+    ArrayList<StructuredData> list;                 // DD for Table.
+    File file;                                      // Data file.
+    int ChoiceTracer=-1;                            // Side Nav user selection Trace.
     int TemIndex = 0;                               // Has to be here to allow FillTemp, I don't want to keep track of more stuff to the functions.
     int HumIndex = 0;                               // Has to be here to allow FillHum, I don't want to keep track of more stuff to the functions.
-    double Humidity [][] = new double[60][10];      //60 Slots aka days, for 10 values.
-    double Temperature [][] = new double[60][10];   //60 Slots aka days, for 10 values.
-    int SampleTime=-1;                              //10 values consist 1 sample. 1 Day = 2 samples.
+    double Humidity [][] = new double[60][10];      // 60 Slots aka days, for 10 values.
+    double Temperature [][] = new double[60][10];   // 60 Slots aka days, for 10 values.
+    int SampleTime=-1;                              // 10 values consist 1 sample. 1 Day = 2 samples.
+    boolean guard = false;                          // DataToTable won't run twice.
+    boolean done = false;                           // CalcStats won't run twice.
     String [] Days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     String [] Months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    int [] MonthEndsIn = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};    
+    
     public class StructuredData{
         String Date;
         double Humidity;
@@ -52,66 +74,9 @@ public class mainApp extends javax.swing.JFrame {
         
     }
     
-    public void DataToTable() throws IOException{
-        int DaysCounter=0; //29/12 was Monday
-        ReadData();
-        
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();   
-        ArrayList<StructuredData> list = ListData();
-
-        Object rowData [] = new Object[3];
-        
-        for(int i=0; i<list.size();i++){
-            if(i%20==0){
-                DaysCounter++;
-            }
-            rowData[0] = Days[DaysCounter%7] +" "+ list.get(i).Date;
-            rowData[1] = list.get(i).Humidity;
-            rowData[2] = list.get(i).Temperature;
-            model.addRow(rowData);
-        }
-    }
-    
-    public ArrayList ListData(){
-        
-        ArrayList<StructuredData> list = new ArrayList<StructuredData>();
-        int date = 29; 
-        int monthcounter = 10;
-        int Samples = SampleTime;       
-        
-        for(int i=0; i<=Samples;i++){
-            
-            if(date%30==0 && list.size()%20==0){     // 2nd loop
-                monthcounter++;
-                date=1;
-            }
-            else if(list.size()%20==0){    // 1st loop
-                date++;
-            }
-            
-            for(int j=0; j<10;j++){
-                
-                list.add( new StructuredData(valueOf(date%31) +" "+ Months[monthcounter%12],Humidity[i][j],Temperature[i][j]));       
-            }
-            //31 December... Should be generalized, this is not a formal solution.
-            
-            
-        }
-        return list;
-    }
-    
-    public void FillTemp(String stLine){
-        
-        Temperature[SampleTime][TemIndex] = Double.parseDouble(stLine.substring(17));
-    }
-    
-    public void FillHum(String stLine){
-        
-        Humidity[SampleTime][HumIndex] = Double.parseDouble(stLine.substring(14));
-    }
-    
     public void ReadData() throws FileNotFoundException,IOException{
         String stLine;
+        
         try{
             file = new File("data.txt");
             
@@ -121,7 +86,7 @@ public class mainApp extends javax.swing.JFrame {
                 
                 if(stLine.matches("../..")){
                     
-                    SampleTime++;   // Index για το δείγμα.
+                    SampleTime++;   // Index for the sample.
                     TemIndex = 0;
                     HumIndex = 0;
                     
@@ -143,79 +108,486 @@ public class mainApp extends javax.swing.JFrame {
             
         }
         catch(FileNotFoundException e){
-            System.out.println("ΛΑΘΟΣ PATH!");
+            System.out.println("Wrong Path!");
             
         }
+    }  
+    
+    public void FillTemp(String stLine){
+        
+        Temperature[SampleTime][TemIndex] = Double.parseDouble(stLine.substring(17));
     }
     
-    CardLayout card;
-    public mainApp() throws IOException {
+    public void FillHum(String stLine){
+        
+        Humidity[SampleTime][HumIndex] = Double.parseDouble(stLine.substring(14));
+    }
+     
+    public ArrayList ListData(){
+        
+        list = new ArrayList<StructuredData>();
+        int date = 29; 
+        int monthcounter = 10;
+        int Samples = SampleTime;       
+        
+        for(int i=0; i<=Samples;i++){
+            
+            if(date%MonthEndsIn[monthcounter%12]==0 && list.size()%20==0){
+                monthcounter++;
+                date=1;
+            }
+            else if(list.size()%20==0){
+                date++;
+            }
+            
+            for(int j=0; j<10;j++){
+                
+                list.add( new StructuredData(valueOf(date%(MonthEndsIn[monthcounter%12]+1)) +" "+ Months[monthcounter%12],Humidity[i][j],Temperature[i][j]));       
+            }
+            // 31 December... Should be generalized, this is not a formal solution.
+            // Works for years 2021-2022-2023. Απόρροια αυτής της υλοποίησης είναι ο τρόπος ανάκτησης των δεδομένων και οι κακές πρακτικές στην αποθήκευσή τους.
+            // 
+            
+        }
+        
+        return list;
+    }
 
+    public ArrayList ListData(int Selection){
+        
+        list = new ArrayList<StructuredData>();
+        int date = 29; 
+        int monthcounter = 10;
+        int Samples = Selection;       
+        
+        for(int i=0; i<=Samples;i++){
+            
+            if(date%MonthEndsIn[monthcounter%12]==0 && list.size()%20==0){
+                monthcounter++;
+                date=1;
+            }
+            else if(list.size()%20==0){
+                date++;
+            }
+            
+            for(int j=0; j<10;j++){
+                
+                list.add( new StructuredData(valueOf(date%(MonthEndsIn[monthcounter%12]+1)) +" "+ Months[monthcounter%12],Humidity[i][j],Temperature[i][j]));       
+            }
+            // 31 December... Should be generalized, this is not a formal solution.
+            // Works for years 2021-2022-2023. Απόρροια αυτής της υλοποίησης είναι ο τρόπος ανάκτησης των δεδομένων και οι κακές πρακτικές στην αποθήκευσή τους.
+            // 
+            
+        }
+        
+        return list;
+    }
+    
+    public void DataToTable() throws IOException{
+        int DaysCounter=0; // 29/12 was Monday
+        
+        DefaultTableModel model = (DefaultTableModel)DataTable.getModel();   
+        list = ListData();
+
+        Object rowData [] = new Object[3];
+        
+        for(int i=0; i<list.size();i++){
+            if(i%20==0){
+                DaysCounter++;
+            }
+            rowData[0] = Days[DaysCounter%7] +" "+ list.get(i).Date;
+            rowData[1] = list.get(i).Humidity;
+            rowData[2] = list.get(i).Temperature;
+            model.addRow(rowData);
+        }
+    }
+    public void CalcStats(){
+        // Mean, Median, Prevailing, min and max values.
+        double [] TempValues = new double[list.size()];
+        double [] HumiValues = new double[list.size()];
+        // average values
+        int sumTemp = 0;
+        int sumHumi = 0;
+        
+        for(int i=0; i<list.size();i++){
+            sumTemp += list.get(i).Temperature;
+            sumHumi += list.get(i).Humidity;
+            TempValues[i] = list.get(i).Temperature;
+            HumiValues[i] = list.get(i).Humidity;
+        }
+        Arrays.sort(TempValues);
+        Arrays.sort(HumiValues);
+        
+        // prevailing value
+        double Temptrace = TempValues[0];
+        double prevailTemp = TempValues[0];
+        int counterTemp = 0;
+        int maxTemp = 0;
+        
+        double Humitrace = HumiValues[0];
+        double prevailHumi = HumiValues[0];
+        int counterHumi = 0;
+        int maxHumi = 0;
+        
+        for(int i=1; i<list.size();i++){
+            
+            if(TempValues[i]==Temptrace){
+                counterTemp++;
+            }else{
+                
+                if(counterTemp>maxTemp){
+                    prevailTemp = TempValues[i-1];
+                    maxTemp = counterTemp;
+                }
+                Temptrace = TempValues[i];
+                counterTemp = 1;
+            }
+            
+            if(HumiValues[i]==Humitrace){
+                counterHumi++;
+            }else{
+                
+                if(counterHumi>maxHumi){
+                    prevailHumi = HumiValues[i-1];
+                    maxHumi = counterHumi;
+                }
+                Humitrace = HumiValues[i];
+                counterHumi = 1;
+            }
+            
+        }
+        System.out.println(prevailTemp +" "+ maxTemp);
+        System.out.println(prevailHumi +" "+ maxHumi);
+        sumTemp /= list.size();
+        sumHumi /= list.size();
+        System.out.println(sumTemp+" "+sumHumi);
+        System.out.println(TempValues[list.size()/2]+" "+HumiValues[list.size()/2]+" "+TempValues[0]+" "+TempValues[TempValues.length-1]+" "+HumiValues[0]+ " " + HumiValues[HumiValues.length-1]);
+    }
+    
+    public mainApp() throws IOException {
+        
+        ReadData();
+        ListData();
+        System.out.println(list.toString());
         initComponents();
-        
         //Some work for the DataForm. It should be removed. Also, scroll and border need to be better..
-        DataToTable();
         
-        
-        jTable1.setBackground(new Color(0,0,0,0));
+        DataTable.setBackground(new Color(0,0,0,0));
         jScrollPane1.setBackground(new Color(0,0,0,0));
-        jTable1.setOpaque(false);
+        DataTable.setOpaque(false);
         jScrollPane1.setOpaque(false);
-        jTable1.setGridColor(Color.BLUE);
-        jTable1.setForeground(Color.BLACK);
-        
+        DataTable.setGridColor(Color.BLUE);
+        DataTable.setForeground(Color.BLACK);
         jScrollPane1.getViewport().setOpaque(false);
+        
+        TemSlider.setMaximum(SampleTime);
+        HumSlider.setMaximum(SampleTime);
+        
         card = (CardLayout)(cardLayouts.getLayout());
         
     }
     
+    public void showTemPieChart(){
+        
+       DefaultPieDataset barDataset = new DefaultPieDataset( );
+       int Counter[] = {0,0,0,0,0};
+       
+       for(int i=0; i<list.size();i++){
+           if(list.get(i).Temperature>16){
+               Counter[0]++;  
+           }else if(list.get(i).Temperature>12){
+               Counter[1]++;
+           }else if(list.get(i).Temperature>8){
+               Counter[2]++;
+           }else if(list.get(i).Temperature>4){
+               Counter[3]++;
+           }else{
+               Counter[4]++;
+           }
+       }
+       barDataset.setValue("Very High", Counter[0]);
+       barDataset.setValue("High", Counter[1]);
+       barDataset.setValue("OK", Counter[2]);
+       barDataset.setValue("Low", Counter[3]);
+       barDataset.setValue("Very Low", Counter[4]);
+       JFreeChart piechart = ChartFactory.createPieChart("Temp Overview", barDataset, false, true, false);
+
+       piechart.setBackgroundPaint(new Color(0, 0, 0, 0));
+
+       PiePlot piePlot =(PiePlot) piechart.getPlot();
+
+       piePlot.setSectionPaint("Very High", new Color(255,0,0));
+       piePlot.setSectionPaint("High", new Color(255,153,51));
+       piePlot.setSectionPaint("OK", new Color(0,204,0));
+       piePlot.setSectionPaint("Low", new Color(0,204,204));
+       piePlot.setSectionPaint("Very Low", new Color(0,0,204));
+
+       piePlot.setBackgroundPaint(new Color(0,0,80,20));
+       piePlot.setOutlinePaint(new Color(20,20,20,20));
+
+       ChartPanel pieChartPanel = new ChartPanel(piechart);
+       pieChartPanel.setOpaque(false);
+       pieChartPanel.setBackground(new Color(0,0,80,20));
+       TemPieChart.removeAll();
+       TemPieChart.add(pieChartPanel, BorderLayout.CENTER);
+       TemPieChart.validate();
+       
+    }
     
-    public void setMAIN(JComponent comp){
-        System.out.println("HI");
-        //===============================Not sure what they do if its important put them back in but they kinda mess with the button collors
-        //GradientMAIN.removeAll(); 
-        //GradientMAIN.add(comp);
-        System.out.println("HI");
+    public void showHumPieChart(){
+       DefaultPieDataset barDataset = new DefaultPieDataset( );
+       int Counter[] = {0,0,0,0,0};
+       
+       for(int i=0; i<list.size();i++){
+           if(list.get(i).Humidity>80){
+               Counter[0]++;  
+           }else if(list.get(i).Humidity>65){
+               Counter[1]++;
+           }else if(list.get(i).Humidity>45){
+               Counter[2]++;
+           }else if(list.get(i).Humidity>20){
+               Counter[3]++;
+           }else{
+               Counter[4]++;
+           }
+       }
+       barDataset.setValue("Very High", Counter[0]);
+       barDataset.setValue("High", Counter[1]);
+       barDataset.setValue("OK", Counter[2]);
+       barDataset.setValue("Low", Counter[3]);
+       barDataset.setValue("Very Low", Counter[4]);
+       JFreeChart piechart = ChartFactory.createPieChart("Hum Overview", barDataset, false, true, false);
+
+       piechart.setBackgroundPaint(new Color(0, 0, 0, 0));
+
+       PiePlot piePlot =(PiePlot) piechart.getPlot();
+
+       piePlot.setSectionPaint("Very High", new Color(255,0,0));
+       piePlot.setSectionPaint("High", new Color(255,153,51));
+       piePlot.setSectionPaint("OK", new Color(0,204,0));
+       piePlot.setSectionPaint("Low", new Color(0,204,204));
+       piePlot.setSectionPaint("Very Low", new Color(0,0,204));
+
+       piePlot.setBackgroundPaint(new Color(0,0,80,20));
+       piePlot.setOutlinePaint(new Color(20,20,20,20));
+
+       ChartPanel pieChartPanel = new ChartPanel(piechart);
+       pieChartPanel.setOpaque(false);
+       pieChartPanel.setBackground(new Color(0,0,80,20));
+       HumPieChart.removeAll();
+       HumPieChart.add(pieChartPanel, BorderLayout.CENTER);
+       HumPieChart.validate();
+       
+    }
+    // PROBLIMATA, MALLON ESWTERIKA!!! Einai SIGOURA ESWTERIKA
+    public void showBarChart(){
+        DefaultCategoryDataset UniData = new DefaultCategoryDataset();
+        int SumTemp=0,SumHumi=0;
+        
+        for(int i=0; i<list.size(); i++){
+            SumTemp+=list.get(i).Temperature;
+            SumHumi+=list.get(i).Humidity;
+            if(i%20==0){
+                UniData.setValue(SumTemp/20, "Temperature", i+"");
+                UniData.setValue(SumHumi/20, "Humidity", i+"");
+                SumTemp=0;
+                SumHumi=0;
+            }
+        }
+        
+        JFreeChart chart = ChartFactory.createBarChart("Bar Chart","Day","Value", 
+                                                        UniData,
+                                                        PlotOrientation.VERTICAL, false,true,false);
+        
+        CategoryPlot categoryPlot = chart.getCategoryPlot();
+        //categoryPlot.setRangeGridlinePaint(Color.BLUE);
+        
+        
+        categoryPlot.setBackgroundPaint(new Color(0,0,0,0));
+        
+        BarRenderer renderer = (BarRenderer) categoryPlot.getRenderer();
+        Color clr1 = new Color(51, 0, 255);
+        Color clr2 = new Color(255, 0, 51);
+        renderer.setSeriesPaint(0, clr2);
+        renderer.setSeriesPaint(1, clr1);
+
+        chart.setBackgroundPaint(null);
+        ChartPanel barChartPanel = new ChartPanel(chart);
+        barChartPanel.setBackground(new Color(0,0,0,0));
+        TemHumBarChart.removeAll();
+        TemHumBarChart.add(barChartPanel, BorderLayout.CENTER);
+        TemHumBarChart.validate();
+        
         
     }
     
-    public void SelectionFromLeftNav(int key){
+    public void showLineTempChart(){
+        DefaultCategoryDataset Tempdataset = new DefaultCategoryDataset();
+        
+        
+        for(int i=0; i<list.size(); i++){
+            Tempdataset.setValue(list.get(i).Temperature, "Temperature", i+"");
+        }
+        JFreeChart linechart = ChartFactory.createLineChart("Temperature","SampleTimings","Readings", Tempdataset, PlotOrientation.VERTICAL, false,true,false);
+        CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+        LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+        Color lineChartColor = new Color(255,255,0);
+        lineRenderer.setSeriesPaint(0, lineChartColor);
+        ChartPanel lineChartPanel = new ChartPanel(linechart);
+        
+        lineChartPanel.setOpaque(false);
+        lineCategoryPlot.setBackgroundPaint(new Color(0,0,0,0));
+        linechart.setBackgroundPaint(new Color(0,0,80,25));
+        lineChartPanel.setBackground(new Color(0,0,0,0));
+        
+        TempLineChart.removeAll();
+        TempLineChart.add(lineChartPanel, BorderLayout.CENTER);
+        TempLineChart.validate();
+
+    }
+    
+    public void showLineTempChart(int k){
+        DefaultCategoryDataset Tempdataset = new DefaultCategoryDataset();
+        System.out.println(list.size());
+
+        TempLineChart.removeAll();
+        for(int i=0; i<list.size(); i+=k){
+            Tempdataset.setValue(list.get(i).Temperature, "Temperature", i+"");
+        }
+        JFreeChart linechart = ChartFactory.createLineChart("Temperature","SampleTimings","Readings", Tempdataset, PlotOrientation.VERTICAL, false,true,false);
+        
+        CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+        LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+        Color lineChartColor = new Color(255,255,0);
+        lineRenderer.setSeriesPaint(0, lineChartColor);
+        ChartPanel lineChartPanel = new ChartPanel(linechart);
+        
+        lineChartPanel.setOpaque(false);
+        lineCategoryPlot.setBackgroundPaint(new Color(0,0,0,0));
+        linechart.setBackgroundPaint(new Color(0,0,80,25));
+        lineChartPanel.setBackground(new Color(0,0,0,0));
+        
+        TempLineChart.removeAll();
+        TempLineChart.add(lineChartPanel, BorderLayout.CENTER);
+        TempLineChart.validate();
+
+    }
+
+    public void showLineHumChart(){
+        DefaultCategoryDataset Humdataset = new DefaultCategoryDataset();
+        
+        for(int i=0; i<list.size(); i++){
+            Humdataset.setValue(list.get(i).Humidity, "Humidity", i+"");
+        }
+        JFreeChart linechart = ChartFactory.createLineChart("Humidity","SampleTimings","Readings", Humdataset, PlotOrientation.VERTICAL, false,true,false);
+        CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+        LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+        Color lineChartColor = new Color(255,255,0);
+        lineRenderer.setSeriesPaint(0, lineChartColor);
+        ChartPanel lineChartPanel = new ChartPanel(linechart);
+        
+        lineChartPanel.setOpaque(false);
+        lineCategoryPlot.setBackgroundPaint(new Color(0,0,0,0));
+        linechart.setBackgroundPaint(new Color(0,0,80,25));
+        lineChartPanel.setBackground(new Color(0,0,0,0));
+        
+        HumLineChart.removeAll();
+        HumLineChart.add(lineChartPanel, BorderLayout.CENTER);
+        HumLineChart.validate();
+    }
+    
+    public void showLineHumChart(int k){
+        DefaultCategoryDataset Humdataset = new DefaultCategoryDataset();
+        System.out.println(list.size());
+        
+        HumLineChart.removeAll();
+        for(int i=0; i<list.size(); i+=k){
+            Humdataset.setValue(list.get(i).Humidity, "Humidity", i+"");
+        }
+        JFreeChart linechart = ChartFactory.createLineChart("Humidity","SampleTimings","Readings", Humdataset, PlotOrientation.VERTICAL, false,true,false);
+        
+        CategoryPlot lineCategoryPlot = linechart.getCategoryPlot();
+        
+        LineAndShapeRenderer lineRenderer = (LineAndShapeRenderer) lineCategoryPlot.getRenderer();
+        Color lineChartColor = new Color(255,255,0);
+        lineRenderer.setSeriesPaint(0, lineChartColor);
+        ChartPanel lineChartPanel = new ChartPanel(linechart);
+        
+        lineChartPanel.setOpaque(false);
+        lineCategoryPlot.setBackgroundPaint(new Color(0,0,0,0));
+        
+        linechart.setBackgroundPaint(new Color(0,0,80,25));
+        lineChartPanel.setBackground(new Color(0,0,0,0));
+        
+        HumLineChart.removeAll();
+        HumLineChart.add(lineChartPanel, BorderLayout.CENTER);
+        HumLineChart.validate();
+
+    }
+     
+    public void SelectionFromLeftNav(int key) throws IOException{
         if(key!=ChoiceTracer){
             switch(key){
                 case 0 -> {
-                    setMAIN(new DashboardForm());
-                    DashboardButton.setBackground(new java.awt.Color(11, 11, 33));
-                    DashboardLabel.setForeground(new java.awt.Color(255, 255, 0));
-                    DataLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    StatisticsLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    SettingsLabel.setForeground(new java.awt.Color(255, 255, 255));
+                    
+                    DashboardButton.setColorNormal(new Color(11,11,33));
+                    DataButton.setColorNormal(Default);
+                    StatisticsButton.setColorNormal(Default);
+                    SettingsButton.setColorNormal(Default);
+                    
+                    DashboardLabel.setForeground(Color.YELLOW);
+                    DataLabel.setForeground(Color.WHITE);
+                    StatisticsLabel.setForeground(Color.WHITE);
+                    SettingsLabel.setForeground(Color.WHITE);
                     ChoiceTracer=key;
+                    
+                    showLineTempChart();
+                    showLineHumChart();
+                    showBarChart();
+                    showTemPieChart();
+                    showHumPieChart();
                 }
                 case 1 -> {
-                    setMAIN(new DataForm());
-                    DataButton.setBackground(new java.awt.Color(11, 11, 33));
-                    DataLabel.setForeground(new java.awt.Color(255, 255, 0));
-                    DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    StatisticsLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    SettingsLabel.setForeground(new java.awt.Color(255, 255, 255));
+                    
+                    DashboardButton.setColorNormal(Default);
+                    DataButton.setColorNormal(new Color(11,11,33));
+                    StatisticsButton.setColorNormal(Default);
+                    SettingsButton.setColorNormal(Default);
+                    
+                    DataLabel.setForeground(Color.YELLOW);
+                    DashboardLabel.setForeground(Color.WHITE);
+                    StatisticsLabel.setForeground(Color.WHITE);
+                    SettingsLabel.setForeground(Color.WHITE);
                     ChoiceTracer=key;
+                    if(!guard) DataToTable();
+                    guard=true;
+                    
                 }
-                case 2 -> {
-                    setMAIN(new StatisticsForm());
-                    StatisticsButton.setBackground(new java.awt.Color(11, 11, 33));
-                    StatisticsLabel.setForeground(new java.awt.Color(255, 255, 0));
-                    DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    DataLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    SettingsLabel.setForeground(new java.awt.Color(255, 255, 255));
+                case 2 -> {      
+                    DashboardButton.setColorNormal(Default);
+                    DataButton.setColorNormal(Default);
+                    StatisticsButton.setColorNormal(new Color(11,11,33));
+                    SettingsButton.setColorNormal(Default);
+                    
+                    DashboardLabel.setForeground(Color.WHITE);
+                    DataLabel.setForeground(Color.WHITE);
+                    StatisticsLabel.setForeground(Color.YELLOW);
+                    SettingsLabel.setForeground(Color.WHITE);
                     ChoiceTracer=key;
+                    if(!done) CalcStats();
+                    done = true;
+                    
                 }
                 case 3 ->{
-                    setMAIN(new SettingsForm());
-                    SettingsButton.setBackground(new java.awt.Color(11, 11, 33));
-                    SettingsLabel.setForeground(new java.awt.Color(255, 255, 0));
-                    DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    DataLabel.setForeground(new java.awt.Color(255, 255, 255));
-                    StatisticsLabel.setForeground(new java.awt.Color(255, 255, 255));
+                    DashboardButton.setColorNormal(Default);
+                    DataButton.setColorNormal(Default);
+                    StatisticsButton.setColorNormal(Default);
+                    SettingsButton.setColorNormal(new Color(11,11,33));
+                    
+                    DashboardLabel.setForeground(Color.WHITE);
+                    DataLabel.setForeground(Color.WHITE);
+                    StatisticsLabel.setForeground(Color.WHITE);
+                    SettingsLabel.setForeground(Color.YELLOW);
                     ChoiceTracer=key;
                 }
                 default -> System.out.println("Problima");   
@@ -242,14 +614,21 @@ public class mainApp extends javax.swing.JFrame {
         ExitButton = new rojerusan.RSButtonPane();
         ExitLabel = new javax.swing.JLabel();
         PresentPanel = new javax.swing.JPanel();
-        GradientMAIN = new keeptoo.KGradientPanel();
         cardLayouts = new javax.swing.JPanel();
+        GradientMAIN = new keeptoo.KGradientPanel();
         DashboardPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        SettingsPanel = new javax.swing.JPanel();
-        StatisticPanel = new javax.swing.JPanel();
+        HumSlider = new javax.swing.JSlider();
+        TemSlider = new javax.swing.JSlider();
+        TempLineChart = new javax.swing.JPanel();
+        HumLineChart = new javax.swing.JPanel();
+        TemHumBarChart = new javax.swing.JPanel();
+        TemPieChart = new javax.swing.JPanel();
+        HumPieChart = new javax.swing.JPanel();
         DataPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        DataTable = new javax.swing.JTable();
+        StatisticPanel = new javax.swing.JPanel();
+        SettingsPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -267,7 +646,6 @@ public class mainApp extends javax.swing.JFrame {
         Welcome_userLabe.setText("Welcome \"Username\"");
         LeftNav.add(Welcome_userLabe, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 230, 30));
 
-        DashboardButton.setBackground(new java.awt.Color(23, 23, 69));
         DashboardButton.setForeground(new java.awt.Color(254, 254, 254));
         DashboardButton.setColorHover(new java.awt.Color(48, 48, 145));
         DashboardButton.setColorNormal(new java.awt.Color(23, 23, 69));
@@ -278,7 +656,7 @@ public class mainApp extends javax.swing.JFrame {
         });
 
         DashboardLabel.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        DashboardLabel.setForeground(new java.awt.Color(255, 255, 0));
+        DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
         DashboardLabel.setText("Dashboard");
 
         javax.swing.GroupLayout DashboardButtonLayout = new javax.swing.GroupLayout(DashboardButton);
@@ -437,6 +815,8 @@ public class mainApp extends javax.swing.JFrame {
         PresentPanel.setOpaque(false);
         PresentPanel.setLayout(new java.awt.BorderLayout());
 
+        cardLayouts.setLayout(new java.awt.CardLayout());
+
         GradientMAIN.setkEndColor(new java.awt.Color(69, 69, 209));
         GradientMAIN.setkGradientFocus(2000);
         GradientMAIN.setkStartColor(new java.awt.Color(23, 23, 69));
@@ -444,11 +824,118 @@ public class mainApp extends javax.swing.JFrame {
         GradientMAIN.setMinimumSize(new java.awt.Dimension(1600, 900));
         GradientMAIN.setPreferredSize(new java.awt.Dimension(1600, 900));
         GradientMAIN.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        PresentPanel.add(GradientMAIN, java.awt.BorderLayout.CENTER);
+        cardLayouts.add(GradientMAIN, "card6");
 
-        cardLayouts.setLayout(new java.awt.CardLayout());
+        DashboardPanel.setBackground(new java.awt.Color(23, 23, 69));
 
-        DashboardPanel.setBackground(new java.awt.Color(255, 255, 102));
+        HumSlider.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        HumSlider.setForeground(new java.awt.Color(255, 255, 0));
+        HumSlider.setMaximum(60);
+        HumSlider.setMinimum(1);
+        HumSlider.setValue(1);
+        HumSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        HumSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                HumSliderStateChanged(evt);
+            }
+        });
+        HumSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                HumSliderMouseReleased(evt);
+            }
+        });
+
+        TemSlider.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        TemSlider.setForeground(new java.awt.Color(255, 255, 0));
+        TemSlider.setMaximum(60);
+        TemSlider.setMinimum(1);
+        TemSlider.setValue(1);
+        TemSlider.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        TemSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TemSliderStateChanged(evt);
+            }
+        });
+        TemSlider.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                TemSliderMouseReleased(evt);
+            }
+        });
+        TemSlider.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TemSliderKeyReleased(evt);
+            }
+        });
+
+        TempLineChart.setOpaque(false);
+        TempLineChart.setPreferredSize(new java.awt.Dimension(600, 300));
+        TempLineChart.setLayout(new java.awt.BorderLayout());
+
+        HumLineChart.setOpaque(false);
+        HumLineChart.setPreferredSize(new java.awt.Dimension(600, 300));
+        HumLineChart.setLayout(new java.awt.BorderLayout());
+
+        TemHumBarChart.setOpaque(false);
+        TemHumBarChart.setPreferredSize(new java.awt.Dimension(600, 300));
+        TemHumBarChart.setLayout(new java.awt.BorderLayout());
+
+        TemPieChart.setOpaque(false);
+        TemPieChart.setPreferredSize(new java.awt.Dimension(600, 300));
+        TemPieChart.setLayout(new java.awt.BorderLayout());
+
+        HumPieChart.setOpaque(false);
+        HumPieChart.setPreferredSize(new java.awt.Dimension(600, 300));
+        HumPieChart.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout DashboardPanelLayout = new javax.swing.GroupLayout(DashboardPanel);
+        DashboardPanel.setLayout(DashboardPanelLayout);
+        DashboardPanelLayout.setHorizontalGroup(
+            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DashboardPanelLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(DashboardPanelLayout.createSequentialGroup()
+                        .addComponent(TemSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(HumSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(DashboardPanelLayout.createSequentialGroup()
+                        .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TempLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(DashboardPanelLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(TemPieChart, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(HumPieChart, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(DashboardPanelLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addGap(50, 50, 50))
+        );
+        DashboardPanelLayout.setVerticalGroup(
+            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DashboardPanelLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                    .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(HumSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TemSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(TemPieChart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TemHumBarChart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(HumPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(613, Short.MAX_VALUE))
+        );
+
+        cardLayouts.add(DashboardPanel, "DashboardCard");
+
+        DataPanel.setBackground(new java.awt.Color(255, 102, 102));
+        DataPanel.setPreferredSize(new java.awt.Dimension(600, 1300));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -456,9 +943,9 @@ public class mainApp extends javax.swing.JFrame {
         jScrollPane1.setForeground(new Color(0,0,0,255));
         System.out.println(jScrollPane1.isOpaque());
 
-        jTable1.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
-        jTable1.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        DataTable.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
+        DataTable.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+        DataTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -474,24 +961,41 @@ public class mainApp extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jTable1.setForeground(new Color(0,0,0,255));
-        jTable1.setRowHeight(20);
-        jTable1.setShowGrid(false);
-        System.out.println("jTable"+jTable1.isOpaque());
-        jScrollPane1.setViewportView(jTable1);
+        DataTable.setForeground(new Color(0,0,0,255));
+        DataTable.setRowHeight(20);
+        DataTable.setShowGrid(false);
+        System.out.println("jTable"+DataTable.isOpaque());
+        jScrollPane1.setViewportView(DataTable);
 
-        javax.swing.GroupLayout DashboardPanelLayout = new javax.swing.GroupLayout(DashboardPanel);
-        DashboardPanel.setLayout(DashboardPanelLayout);
-        DashboardPanelLayout.setHorizontalGroup(
-            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout DataPanelLayout = new javax.swing.GroupLayout(DataPanel);
+        DataPanel.setLayout(DataPanelLayout);
+        DataPanelLayout.setHorizontalGroup(
+            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1370, Short.MAX_VALUE)
         );
-        DashboardPanelLayout.setVerticalGroup(
-            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 912, Short.MAX_VALUE)
+        DataPanelLayout.setVerticalGroup(
+            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DataPanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 476, Short.MAX_VALUE))
         );
 
-        cardLayouts.add(DashboardPanel, "DashboardCard");
+        cardLayouts.add(DataPanel, "DataCard");
+
+        StatisticPanel.setBackground(new java.awt.Color(23, 23, 69));
+
+        javax.swing.GroupLayout StatisticPanelLayout = new javax.swing.GroupLayout(StatisticPanel);
+        StatisticPanel.setLayout(StatisticPanelLayout);
+        StatisticPanelLayout.setHorizontalGroup(
+            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1370, Short.MAX_VALUE)
+        );
+        StatisticPanelLayout.setVerticalGroup(
+            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1375, Short.MAX_VALUE)
+        );
+
+        cardLayouts.add(StatisticPanel, "StatisticCard");
 
         SettingsPanel.setBackground(new java.awt.Color(255, 153, 153));
 
@@ -503,40 +1007,10 @@ public class mainApp extends javax.swing.JFrame {
         );
         SettingsPanelLayout.setVerticalGroup(
             SettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
+            .addGap(0, 1375, Short.MAX_VALUE)
         );
 
         cardLayouts.add(SettingsPanel, "SettingsCard");
-
-        StatisticPanel.setBackground(new java.awt.Color(153, 255, 204));
-
-        javax.swing.GroupLayout StatisticPanelLayout = new javax.swing.GroupLayout(StatisticPanel);
-        StatisticPanel.setLayout(StatisticPanelLayout);
-        StatisticPanelLayout.setHorizontalGroup(
-            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1370, Short.MAX_VALUE)
-        );
-        StatisticPanelLayout.setVerticalGroup(
-            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
-        );
-
-        cardLayouts.add(StatisticPanel, "StatisticCard");
-
-        DataPanel.setBackground(new java.awt.Color(255, 102, 102));
-
-        javax.swing.GroupLayout DataPanelLayout = new javax.swing.GroupLayout(DataPanel);
-        DataPanel.setLayout(DataPanelLayout);
-        DataPanelLayout.setHorizontalGroup(
-            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1370, Short.MAX_VALUE)
-        );
-        DataPanelLayout.setVerticalGroup(
-            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
-        );
-
-        cardLayouts.add(DataPanel, "DataCard");
 
         PresentPanel.add(cardLayouts, java.awt.BorderLayout.PAGE_START);
 
@@ -547,43 +1021,86 @@ public class mainApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ExitButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMouseReleased
-        // TODO add your handling code here:
-        ExitButton.setBackground(new java.awt.Color(23, 23, 69));
-        System.exit(0);
+       
     }//GEN-LAST:event_ExitButtonMouseReleased
 
     private void ExitButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMousePressed
         // TODO add your handling code here:
-        ExitButton.setBackground(new java.awt.Color(11, 11, 33));
+        ExitButton.setBackground(new Color(11, 11, 33));
+        System.exit(0);
     }//GEN-LAST:event_ExitButtonMousePressed
 
     private void SettingsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SettingsButtonMousePressed
         // TODO add your handling code here:
         card.show(cardLayouts, "SettingsCard");
-        SelectionFromLeftNav(3);
+        try {
+            SelectionFromLeftNav(3);
+        } catch (IOException ex) {
+            Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_SettingsButtonMousePressed
 
     private void StatisticsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StatisticsButtonMousePressed
         // TODO add your handling code here:
         card.show(cardLayouts, "StatisticCard");
-        SelectionFromLeftNav(2);
+        try {
+            SelectionFromLeftNav(2);
+        } catch (IOException ex) {
+            Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_StatisticsButtonMousePressed
 
     private void DataButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DataButtonMousePressed
         // TODO add your handling code here:
         //-------------------------------------------------------------------------------------------------------
-        card.show(cardLayouts, "DataCard");
-      
-        SelectionFromLeftNav(1);
+        card.show(cardLayouts, "DataCard");      
+        try {
+            SelectionFromLeftNav(1);
+        } catch (IOException ex) {
+            Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_DataButtonMousePressed
 
     private void DashboardButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardButtonMousePressed
-        // TODO add your handling code here:
-        SelectionFromLeftNav(0);
+        try {
+            // TODO add your handling code here:
+            SelectionFromLeftNav(0);
+        } catch (IOException ex) {
+            Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         card.show(cardLayouts , "DashboardCard");
     }//GEN-LAST:event_DashboardButtonMousePressed
+
+    private void TemSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TemSliderStateChanged
+        System.out.println(TemSlider.getValue());
+        showLineTempChart(TemSlider.getValue());
+    }//GEN-LAST:event_TemSliderStateChanged
+
+    private void TemSliderKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TemSliderKeyReleased
+        
+    }//GEN-LAST:event_TemSliderKeyReleased
+
+    private void TemSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TemSliderMouseReleased
+        // TODO add your handling code here:
+        System.out.println(TemSlider.getValue());
+        showLineTempChart(TemSlider.getValue());
+    }//GEN-LAST:event_TemSliderMouseReleased
+
+    private void HumSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumSliderMouseReleased
+        // TODO add your handling code here:
+        System.out.println(HumSlider.getValue());
+        showLineHumChart(HumSlider.getValue());
+
+    }//GEN-LAST:event_HumSliderMouseReleased
+
+    private void HumSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HumSliderStateChanged
+        // TODO add your handling code here:
+        System.out.println(HumSlider.getValue());
+        showLineHumChart(HumSlider.getValue());
+
+    }//GEN-LAST:event_HumSliderStateChanged
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -629,9 +1146,13 @@ public class mainApp extends javax.swing.JFrame {
     private rojerusan.RSButtonPane DataButton;
     private javax.swing.JLabel DataLabel;
     private javax.swing.JPanel DataPanel;
+    private javax.swing.JTable DataTable;
     private rojerusan.RSButtonPane ExitButton;
     private javax.swing.JLabel ExitLabel;
     private keeptoo.KGradientPanel GradientMAIN;
+    private javax.swing.JPanel HumLineChart;
+    private javax.swing.JPanel HumPieChart;
+    private javax.swing.JSlider HumSlider;
     private javax.swing.JPanel LeftNav;
     private javax.swing.JPanel PresentPanel;
     private rojerusan.RSButtonPane SettingsButton;
@@ -640,9 +1161,12 @@ public class mainApp extends javax.swing.JFrame {
     private javax.swing.JPanel StatisticPanel;
     private rojerusan.RSButtonPane StatisticsButton;
     private javax.swing.JLabel StatisticsLabel;
+    private javax.swing.JPanel TemHumBarChart;
+    private javax.swing.JPanel TemPieChart;
+    private javax.swing.JSlider TemSlider;
+    private javax.swing.JPanel TempLineChart;
     private javax.swing.JLabel Welcome_userLabe;
     private javax.swing.JPanel cardLayouts;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
