@@ -322,15 +322,15 @@ public class mainApp extends javax.swing.JFrame {
        piePlot.setSectionPaint("Low", new Color(0,204,204));
        piePlot.setSectionPaint("Very Low", new Color(0,0,204));
 
-       piePlot.setBackgroundPaint(new Color(0,0,80,20));
+       piePlot.setBackgroundPaint(new Color(0,0,80,10));
        piePlot.setOutlinePaint(new Color(20,20,20,20));
 
        ChartPanel pieChartPanel = new ChartPanel(piechart);
        pieChartPanel.setOpaque(false);
        pieChartPanel.setBackground(new Color(0,0,80,20));
-       TemPieChart.removeAll();
-       TemPieChart.add(pieChartPanel, BorderLayout.CENTER);
-       TemPieChart.validate();
+       TemPieChart1.removeAll();
+       TemPieChart1.add(pieChartPanel, BorderLayout.CENTER);
+       TemPieChart1.validate();
        
     }
     
@@ -437,7 +437,7 @@ public class mainApp extends javax.swing.JFrame {
         
         lineChartPanel.setOpaque(false);
         lineCategoryPlot.setBackgroundPaint(new Color(0,0,0,0));
-        linechart.setBackgroundPaint(new Color(0,0,80,25));
+        linechart.setBackgroundPaint(new Color(30,50,88,50));
         lineChartPanel.setBackground(new Color(0,0,0,0));
         
         TempLineChart.removeAll();
@@ -616,19 +616,19 @@ public class mainApp extends javax.swing.JFrame {
         PresentPanel = new javax.swing.JPanel();
         cardLayouts = new javax.swing.JPanel();
         GradientMAIN = new keeptoo.KGradientPanel();
-        DashboardPanel = new javax.swing.JPanel();
+        DashboardCard = new keeptoo.KGradientPanel();
         HumSlider = new javax.swing.JSlider();
         TemSlider = new javax.swing.JSlider();
         TempLineChart = new javax.swing.JPanel();
         HumLineChart = new javax.swing.JPanel();
         TemHumBarChart = new javax.swing.JPanel();
-        TemPieChart = new javax.swing.JPanel();
+        TemPieChart1 = new javax.swing.JPanel();
         HumPieChart = new javax.swing.JPanel();
-        DataPanel = new javax.swing.JPanel();
+        DataCard = new keeptoo.KGradientPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         DataTable = new javax.swing.JTable();
-        StatisticPanel = new javax.swing.JPanel();
-        SettingsPanel = new javax.swing.JPanel();
+        StatisticCard = new keeptoo.KGradientPanel();
+        SettingsCard = new keeptoo.KGradientPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -826,7 +826,8 @@ public class mainApp extends javax.swing.JFrame {
         GradientMAIN.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         cardLayouts.add(GradientMAIN, "card6");
 
-        DashboardPanel.setBackground(new java.awt.Color(23, 23, 69));
+        DashboardCard.setkEndColor(new java.awt.Color(17, 0, 173));
+        DashboardCard.setkStartColor(new java.awt.Color(27, 27, 75));
 
         HumSlider.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         HumSlider.setForeground(new java.awt.Color(255, 255, 0));
@@ -879,69 +880,70 @@ public class mainApp extends javax.swing.JFrame {
         TemHumBarChart.setPreferredSize(new java.awt.Dimension(600, 300));
         TemHumBarChart.setLayout(new java.awt.BorderLayout());
 
-        TemPieChart.setOpaque(false);
-        TemPieChart.setPreferredSize(new java.awt.Dimension(600, 300));
-        TemPieChart.setLayout(new java.awt.BorderLayout());
+        TemPieChart1.setOpaque(false);
+        TemPieChart1.setPreferredSize(new java.awt.Dimension(600, 300));
+        TemPieChart1.setLayout(new java.awt.BorderLayout());
 
         HumPieChart.setOpaque(false);
         HumPieChart.setPreferredSize(new java.awt.Dimension(600, 300));
         HumPieChart.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout DashboardPanelLayout = new javax.swing.GroupLayout(DashboardPanel);
-        DashboardPanel.setLayout(DashboardPanelLayout);
-        DashboardPanelLayout.setHorizontalGroup(
-            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DashboardPanelLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(DashboardPanelLayout.createSequentialGroup()
-                        .addComponent(TemSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(HumSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(DashboardPanelLayout.createSequentialGroup()
-                        .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TempLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(DashboardPanelLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(TemPieChart, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(HumPieChart, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(DashboardPanelLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addGap(50, 50, 50))
-        );
-        DashboardPanelLayout.setVerticalGroup(
-            DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DashboardPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
-                    .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        javax.swing.GroupLayout DashboardCardLayout = new javax.swing.GroupLayout(DashboardCard);
+        DashboardCard.setLayout(DashboardCardLayout);
+        DashboardCardLayout.setHorizontalGroup(
+            DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DashboardCardLayout.createSequentialGroup()
+                .addGap(101, 101, 101)
+                .addComponent(TemSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(HumSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(102, 102, 102))
+            .addGroup(DashboardCardLayout.createSequentialGroup()
+                .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DashboardCardLayout.createSequentialGroup()
+                        .addGap(45, 45, 45)
+                        .addComponent(TempLineChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(DashboardCardLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(HumSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TemSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(DashboardCardLayout.createSequentialGroup()
+                        .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+                        .addGap(55, 55, 55))
+                    .addGroup(DashboardCardLayout.createSequentialGroup()
+                        .addComponent(TemPieChart1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(HumPieChart, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        DashboardCardLayout.setVerticalGroup(
+            DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DashboardCardLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+                    .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TemSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(HumSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
-                .addGroup(DashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(TemPieChart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TemHumBarChart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(HumPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(613, Short.MAX_VALUE))
+                .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(HumPieChart, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TemPieChart1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(638, Short.MAX_VALUE))
         );
 
-        cardLayouts.add(DashboardPanel, "DashboardCard");
+        cardLayouts.add(DashboardCard, "DashboardCard");
 
-        DataPanel.setBackground(new java.awt.Color(255, 102, 102));
-        DataPanel.setPreferredSize(new java.awt.Dimension(600, 1300));
+        DataCard.setkEndColor(new java.awt.Color(69, 69, 209));
+        DataCard.setkStartColor(new java.awt.Color(23, 23, 69));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setOpaque(false);
-        jScrollPane1.setForeground(new Color(0,0,0,255));
-        System.out.println(jScrollPane1.isOpaque());
 
         DataTable.setBackground(javax.swing.UIManager.getDefaults().getColor("window"));
         DataTable.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
@@ -961,56 +963,56 @@ public class mainApp extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        DataTable.setForeground(new Color(0,0,0,255));
         DataTable.setRowHeight(20);
         DataTable.setShowGrid(false);
-        System.out.println("jTable"+DataTable.isOpaque());
         jScrollPane1.setViewportView(DataTable);
 
-        javax.swing.GroupLayout DataPanelLayout = new javax.swing.GroupLayout(DataPanel);
-        DataPanel.setLayout(DataPanelLayout);
-        DataPanelLayout.setHorizontalGroup(
-            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout DataCardLayout = new javax.swing.GroupLayout(DataCard);
+        DataCard.setLayout(DataCardLayout);
+        DataCardLayout.setHorizontalGroup(
+            DataCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1370, Short.MAX_VALUE)
         );
-        DataPanelLayout.setVerticalGroup(
-            DataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DataPanelLayout.createSequentialGroup()
+        DataCardLayout.setVerticalGroup(
+            DataCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DataCardLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 476, Short.MAX_VALUE))
+                .addGap(0, 480, Short.MAX_VALUE))
         );
 
-        cardLayouts.add(DataPanel, "DataCard");
+        cardLayouts.add(DataCard, "DataCard");
 
-        StatisticPanel.setBackground(new java.awt.Color(23, 23, 69));
+        StatisticCard.setkEndColor(new java.awt.Color(69, 69, 209));
+        StatisticCard.setkStartColor(new java.awt.Color(23, 23, 69));
 
-        javax.swing.GroupLayout StatisticPanelLayout = new javax.swing.GroupLayout(StatisticPanel);
-        StatisticPanel.setLayout(StatisticPanelLayout);
-        StatisticPanelLayout.setHorizontalGroup(
-            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout StatisticCardLayout = new javax.swing.GroupLayout(StatisticCard);
+        StatisticCard.setLayout(StatisticCardLayout);
+        StatisticCardLayout.setHorizontalGroup(
+            StatisticCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1370, Short.MAX_VALUE)
         );
-        StatisticPanelLayout.setVerticalGroup(
-            StatisticPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1375, Short.MAX_VALUE)
+        StatisticCardLayout.setVerticalGroup(
+            StatisticCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1379, Short.MAX_VALUE)
         );
 
-        cardLayouts.add(StatisticPanel, "StatisticCard");
+        cardLayouts.add(StatisticCard, "StatisticCard");
 
-        SettingsPanel.setBackground(new java.awt.Color(255, 153, 153));
+        SettingsCard.setkEndColor(new java.awt.Color(69, 69, 209));
+        SettingsCard.setkStartColor(new java.awt.Color(23, 23, 69));
 
-        javax.swing.GroupLayout SettingsPanelLayout = new javax.swing.GroupLayout(SettingsPanel);
-        SettingsPanel.setLayout(SettingsPanelLayout);
-        SettingsPanelLayout.setHorizontalGroup(
-            SettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout SettingsCardLayout = new javax.swing.GroupLayout(SettingsCard);
+        SettingsCard.setLayout(SettingsCardLayout);
+        SettingsCardLayout.setHorizontalGroup(
+            SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1370, Short.MAX_VALUE)
         );
-        SettingsPanelLayout.setVerticalGroup(
-            SettingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1375, Short.MAX_VALUE)
+        SettingsCardLayout.setVerticalGroup(
+            SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1379, Short.MAX_VALUE)
         );
 
-        cardLayouts.add(SettingsPanel, "SettingsCard");
+        cardLayouts.add(SettingsCard, "SettingsCard");
 
         PresentPanel.add(cardLayouts, java.awt.BorderLayout.PAGE_START);
 
@@ -1073,34 +1075,29 @@ public class mainApp extends javax.swing.JFrame {
         card.show(cardLayouts , "DashboardCard");
     }//GEN-LAST:event_DashboardButtonMousePressed
 
-    private void TemSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TemSliderStateChanged
-        System.out.println(TemSlider.getValue());
-        showLineTempChart(TemSlider.getValue());
-    }//GEN-LAST:event_TemSliderStateChanged
-
-    private void TemSliderKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TemSliderKeyReleased
-        
-    }//GEN-LAST:event_TemSliderKeyReleased
-
-    private void TemSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TemSliderMouseReleased
+    private void HumSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HumSliderStateChanged
         // TODO add your handling code here:
-        System.out.println(TemSlider.getValue());
-        showLineTempChart(TemSlider.getValue());
-    }//GEN-LAST:event_TemSliderMouseReleased
+        showLineHumChart(HumSlider.getValue());
+    }//GEN-LAST:event_HumSliderStateChanged
 
     private void HumSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumSliderMouseReleased
         // TODO add your handling code here:
-        System.out.println(HumSlider.getValue());
         showLineHumChart(HumSlider.getValue());
-
     }//GEN-LAST:event_HumSliderMouseReleased
 
-    private void HumSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_HumSliderStateChanged
+    private void TemSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TemSliderStateChanged
         // TODO add your handling code here:
-        System.out.println(HumSlider.getValue());
-        showLineHumChart(HumSlider.getValue());
+        showLineTempChart(TemSlider.getValue());
+    }//GEN-LAST:event_TemSliderStateChanged
 
-    }//GEN-LAST:event_HumSliderStateChanged
+    private void TemSliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TemSliderMouseReleased
+        // TODO add your handling code here:
+        showLineTempChart(TemSlider.getValue());
+    }//GEN-LAST:event_TemSliderMouseReleased
+
+    private void TemSliderKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TemSliderKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TemSliderKeyReleased
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1141,11 +1138,11 @@ public class mainApp extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AppName;
     private rojerusan.RSButtonPane DashboardButton;
+    private keeptoo.KGradientPanel DashboardCard;
     private javax.swing.JLabel DashboardLabel;
-    private javax.swing.JPanel DashboardPanel;
     private rojerusan.RSButtonPane DataButton;
+    private keeptoo.KGradientPanel DataCard;
     private javax.swing.JLabel DataLabel;
-    private javax.swing.JPanel DataPanel;
     private javax.swing.JTable DataTable;
     private rojerusan.RSButtonPane ExitButton;
     private javax.swing.JLabel ExitLabel;
@@ -1156,13 +1153,13 @@ public class mainApp extends javax.swing.JFrame {
     private javax.swing.JPanel LeftNav;
     private javax.swing.JPanel PresentPanel;
     private rojerusan.RSButtonPane SettingsButton;
+    private keeptoo.KGradientPanel SettingsCard;
     private javax.swing.JLabel SettingsLabel;
-    private javax.swing.JPanel SettingsPanel;
-    private javax.swing.JPanel StatisticPanel;
+    private keeptoo.KGradientPanel StatisticCard;
     private rojerusan.RSButtonPane StatisticsButton;
     private javax.swing.JLabel StatisticsLabel;
     private javax.swing.JPanel TemHumBarChart;
-    private javax.swing.JPanel TemPieChart;
+    private javax.swing.JPanel TemPieChart1;
     private javax.swing.JSlider TemSlider;
     private javax.swing.JPanel TempLineChart;
     private javax.swing.JLabel Welcome_userLabe;
