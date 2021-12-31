@@ -98,7 +98,7 @@ public class Encryption {
             character++;
         }
         randomPin = user.key;
-        System.out.println("auto : "+ user.password);
+        //System.out.println("auto : "+ user.password);
         pass = user.password.toCharArray();
         for(i=0;i<pass.length;i++)
         {
@@ -112,13 +112,13 @@ public class Encryption {
          }
         }
         user.password = "";
-        System.out.println("adio string : "+ user.password);
+        //System.out.println("adio string : "+ user.password);
         for(i=1;i<pass.length;i++)
         {
             user.password = user.password + String.valueOf(pass[i]);
             //System.out.println("reapet : "+ user.password + " eleos : "+ pass[i]);
         }
-        System.out.println(user.name + " " + user.password);
+        //System.out.println(user.name + " " + user.password);
         login load = new login(user, search, password);
         
     }

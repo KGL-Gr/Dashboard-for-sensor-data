@@ -4,18 +4,10 @@
  */
 package project.login;
 
-import javax.swing.border.Border;
 import java.awt.Cursor;
-import java.awt.Frame;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 /**
@@ -27,7 +19,6 @@ public class login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
-    //MyPanel panel;
     public String wrongname = " ";
     public login() {
         initComponents();
@@ -137,9 +128,6 @@ public class login extends javax.swing.JFrame {
                         .addGap(699, 699, 699)
                         .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(581, 581, 581)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(596, 596, 596)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,15 +140,18 @@ public class login extends javax.swing.JFrame {
                                     .addGap(29, 29, 29)
                                     .addComponent(jLabel4)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jLabel5))))))
-                .addContainerGap(728, Short.MAX_VALUE))
+                                    .addComponent(jLabel5)))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(473, 473, 473)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(628, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(76, 76, 76)
+                .addGap(75, 75, 75)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(35, 35, 35)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -246,7 +237,7 @@ public class login extends javax.swing.JFrame {
 
     public void showMessage(User user, String search, String password) {
         String users = search;
-        System.out.println(user.name + " auto pou epsakses : " + users + " kodikos : " + user.password + " search kodikos : " + password);
+        //System.out.println(user.name + " auto pou epsakses : " + users + " kodikos : " + user.password + " search kodikos : " + password);
         if (users.equals(user.name) && password.equals(user.password))
         {
             System.out.println("sosto!");
@@ -256,8 +247,8 @@ public class login extends javax.swing.JFrame {
         } 
         else 
         {
-            WrongText.setText("Wronggggggggggggggg");//cannot be called from here
-            super.update(this.getGraphics());
+            //WrongText.setText("Wronggggggggggggggg");//cannot be called from here
+            //super.update(this.getGraphics());
             System.out.println("wrong username or/and password");
         }
     }

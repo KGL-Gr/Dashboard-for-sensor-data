@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,7 +30,7 @@ public class background extends JPanel implements ActionListener{
     Random rand = new Random();
     public background(){
         try { 
-            image = ImageIO.read(new File("..bar.png"));//need to put the correct path here
+            image = ImageIO.read(this.getClass().getResource("bar.png"));//need to put the correct path here
             }
         catch (IOException ex) {
             System.out.println("Image not found");
@@ -39,7 +38,6 @@ public class background extends JPanel implements ActionListener{
         x[0]=0;
         y[0]=rand.nextInt(800);
         yMove[0]=rand.nextInt(2+2)-2;
-        int n=0;
         for(i=1;i<8;i++)
         {
             x[i]=x[i-1]+200;
@@ -48,10 +46,7 @@ public class background extends JPanel implements ActionListener{
             if(yMove[i]==0)
             {
                 yMove[i]=2;
-                System.out.println("an ksana ante gamhsou");
             }
-            n++;
-            System.out.println(n);
         }
         timer = new Timer(10, this);
         timer.start();
@@ -85,6 +80,5 @@ public class background extends JPanel implements ActionListener{
                y[i] = y[i] + yMove[i]; 
             }
             repaint();
-
 	}
 }
