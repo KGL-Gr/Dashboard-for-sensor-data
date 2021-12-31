@@ -13,10 +13,10 @@ import java.util.ArrayList;
  */
 public class User implements Serializable {
     String name;
-   //String loadname;
     String password;
-   // String loadpassword;
+    String id;
     ArrayList<Character> key;
+    String displayName;
     
     
     public void test()

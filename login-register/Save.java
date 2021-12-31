@@ -11,16 +11,14 @@ import java.io.*;
  * @author panos
  */
 public class Save {
-    //User user = new User();
-    
-    Save(User user, int yes, String search, String password) throws IOException, ClassNotFoundException{
+    Save(User user, int yes, String search, String password, String wrongname) throws IOException, ClassNotFoundException{
         if(yes == 1)
         {
             saveUser(user);
         }
         else if(yes == 0)
         {
-            loadUser(user, yes, search, password);
+            loadUser(user, yes, search, password, wrongname);
         }
     }
     //apothikeuei ta stoixia tou user se enan ser file(prepei na alaksoume topo8esia)
@@ -41,7 +39,7 @@ public class Save {
             System.out.println("IOException is caught");
         }
     }
-    public void loadUser(User user, int yes, String search, String password) throws ClassNotFoundException
+    public void loadUser(User user, int yes, String search, String password, String wrongname) throws ClassNotFoundException
     {
         String tempSearch = search;//username
         search = search + ".ser";//filename
@@ -51,19 +49,17 @@ public class Save {
             user = (User)in.readObject();
             in.close();
             fileIn.close();
-            //an kai h method den einai static de alazei tis metablhtes tou user. den ksero ama kano lathos h einai 8ela ths serialization
             System.out.println("onoma : " + user.name + " kodikos : "+ user.password + " key : "+ user.key );
             System.out.println("tempsearch : " + tempSearch + " password : " +password);
             Encryption test = new Encryption(user, yes, tempSearch, password);
-            
+            //String found = "Found";
         }
         catch(IOException ex)//ama den uparxei user 
         {
             System.out.println("IOException is caught");
             System.out.println("No user found :(");
+            //String notFound = "User not found";
         }
     }
-    
-    
-    
 }
+
