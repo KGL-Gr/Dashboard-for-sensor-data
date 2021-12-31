@@ -378,11 +378,11 @@
             <Container class="keeptoo.KGradientPanel" name="GradientMAIN">
               <Properties>
                 <Property name="kEndColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="d1" green="45" red="45" type="rgb"/>
+                  <Color blue="ad" green="0" red="11" type="rgb"/>
                 </Property>
                 <Property name="kGradientFocus" type="int" value="2000"/>
                 <Property name="kStartColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="45" green="17" red="17" type="rgb"/>
+                  <Color blue="4b" green="1b" red="1b" type="rgb"/>
                 </Property>
                 <Property name="kTransparentControls" type="boolean" value="false"/>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -575,10 +575,10 @@
             <Container class="keeptoo.KGradientPanel" name="DataCard">
               <Properties>
                 <Property name="kEndColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="d1" green="45" red="45" type="rgb"/>
+                  <Color blue="ad" green="0" red="11" type="rgb"/>
                 </Property>
                 <Property name="kStartColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="45" green="17" red="17" type="rgb"/>
+                  <Color blue="4b" green="1b" red="1b" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -633,9 +633,9 @@
                         </Property>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="3" rowCount="0">
-                            <Column editable="true" title="Date" type="java.lang.String"/>
-                            <Column editable="true" title="Humidity" type="java.lang.Object"/>
-                            <Column editable="true" title="Temperature" type="java.lang.Object"/>
+                            <Column editable="false" title="Date" type="java.lang.String"/>
+                            <Column editable="false" title="Humidity" type="java.lang.Object"/>
+                            <Column editable="false" title="Temperature" type="java.lang.Object"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -660,7 +660,7 @@
                         <Property name="rowHeight" type="int" value="20"/>
                         <Property name="showGrid" type="boolean" value="false"/>
                         <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                          <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                          <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -671,10 +671,10 @@
             <Container class="keeptoo.KGradientPanel" name="StatisticCard">
               <Properties>
                 <Property name="kEndColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="d1" green="45" red="45" type="rgb"/>
+                  <Color blue="ad" green="0" red="11" type="rgb"/>
                 </Property>
                 <Property name="kStartColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="45" green="17" red="17" type="rgb"/>
+                  <Color blue="4b" green="1b" red="1b" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -747,9 +747,9 @@
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="3" rowCount="0">
-                        <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                        <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                        <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                        <Column editable="false" title="Title 1" type="java.lang.Object"/>
+                        <Column editable="false" title="Title 2" type="java.lang.Object"/>
+                        <Column editable="false" title="Title 3" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -775,7 +775,7 @@
                       <Color blue="80" green="80" red="81" type="rgb"/>
                     </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                      <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -933,10 +933,10 @@
             <Container class="keeptoo.KGradientPanel" name="SettingsCard">
               <Properties>
                 <Property name="kEndColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="d1" green="45" red="45" type="rgb"/>
+                  <Color blue="ad" green="0" red="11" type="rgb"/>
                 </Property>
                 <Property name="kStartColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="45" green="17" red="17" type="rgb"/>
+                  <Color blue="4b" green="1b" red="1b" type="rgb"/>
                 </Property>
               </Properties>
               <Constraints>

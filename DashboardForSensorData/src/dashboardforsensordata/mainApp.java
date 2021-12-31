@@ -11,7 +11,6 @@ import java.io.IOException;
 import static java.lang.String.valueOf;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -153,7 +152,6 @@ public class mainApp extends javax.swing.JFrame {
             }
             // 31 December... Should be generalized, this is not a formal solution.
             // Works for years 2021-2022-2023. Απόρροια αυτής της υλοποίησης είναι ο τρόπος ανάκτησης των δεδομένων και οι κακές πρακτικές στην αποθήκευσή τους.
-            // 
 
         }
 
@@ -543,7 +541,6 @@ public class mainApp extends javax.swing.JFrame {
     
     public void showLineTempChart(int k) {
         DefaultCategoryDataset Tempdataset = new DefaultCategoryDataset();
-        System.out.println(list.size());
 
         TempLineChart.removeAll();
         for (int i = 0; i < list.size(); i += k) {
@@ -593,7 +590,6 @@ public class mainApp extends javax.swing.JFrame {
     
     public void showLineHumChart(int k) {
         DefaultCategoryDataset Humdataset = new DefaultCategoryDataset();
-        System.out.println(list.size());
 
         HumLineChart.removeAll();
         for (int i = 0; i < list.size(); i += k) {
@@ -927,9 +923,9 @@ public class mainApp extends javax.swing.JFrame {
 
         cardLayouts.setLayout(new java.awt.CardLayout());
 
-        GradientMAIN.setkEndColor(new java.awt.Color(69, 69, 209));
+        GradientMAIN.setkEndColor(new java.awt.Color(17, 0, 173));
         GradientMAIN.setkGradientFocus(2000);
-        GradientMAIN.setkStartColor(new java.awt.Color(23, 23, 69));
+        GradientMAIN.setkStartColor(new java.awt.Color(27, 27, 75));
         GradientMAIN.setkTransparentControls(false);
         GradientMAIN.setMinimumSize(new java.awt.Dimension(1600, 900));
         GradientMAIN.setPreferredSize(new java.awt.Dimension(1600, 900));
@@ -1048,8 +1044,8 @@ public class mainApp extends javax.swing.JFrame {
 
         cardLayouts.add(DashboardCard, "DashboardCard");
 
-        DataCard.setkEndColor(new java.awt.Color(69, 69, 209));
-        DataCard.setkStartColor(new java.awt.Color(23, 23, 69));
+        DataCard.setkEndColor(new java.awt.Color(17, 0, 173));
+        DataCard.setkStartColor(new java.awt.Color(27, 27, 75));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane1.setViewportBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -1068,13 +1064,21 @@ public class mainApp extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         DataTable.setRowHeight(20);
         DataTable.setShowGrid(false);
+        DataTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(DataTable);
 
         javax.swing.GroupLayout DataCardLayout = new javax.swing.GroupLayout(DataCard);
@@ -1092,8 +1096,8 @@ public class mainApp extends javax.swing.JFrame {
 
         cardLayouts.add(DataCard, "DataCard");
 
-        StatisticCard.setkEndColor(new java.awt.Color(69, 69, 209));
-        StatisticCard.setkStartColor(new java.awt.Color(23, 23, 69));
+        StatisticCard.setkEndColor(new java.awt.Color(17, 0, 173));
+        StatisticCard.setkStartColor(new java.awt.Color(27, 27, 75));
 
         jTable1.setFont(new java.awt.Font("SansSerif", 2, 18)); // NOI18N
         jTable1.setForeground(new java.awt.Color(254, 254, 254));
@@ -1104,8 +1108,17 @@ public class mainApp extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setGridColor(new java.awt.Color(129, 128, 128));
+        jTable1.getTableHeader().setReorderingAllowed(false);
 
         StatsInfoLabel.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         StatsInfoLabel.setForeground(new java.awt.Color(254, 254, 254));
@@ -1231,8 +1244,8 @@ public class mainApp extends javax.swing.JFrame {
 
         cardLayouts.add(StatisticCard, "StatisticCard");
 
-        SettingsCard.setkEndColor(new java.awt.Color(69, 69, 209));
-        SettingsCard.setkStartColor(new java.awt.Color(23, 23, 69));
+        SettingsCard.setkEndColor(new java.awt.Color(17, 0, 173));
+        SettingsCard.setkStartColor(new java.awt.Color(27, 27, 75));
 
         javax.swing.GroupLayout SettingsCardLayout = new javax.swing.GroupLayout(SettingsCard);
         SettingsCard.setLayout(SettingsCardLayout);
