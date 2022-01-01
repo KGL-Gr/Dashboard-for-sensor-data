@@ -766,6 +766,21 @@ public class mainApp extends javax.swing.JFrame {
         Herror = new javax.swing.JLabel();
         Lerror = new javax.swing.JLabel();
         VLerror = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        VHHum = new javax.swing.JTextField();
+        HHum = new javax.swing.JTextField();
+        LHum = new javax.swing.JTextField();
+        VLHum = new javax.swing.JTextField();
+        HumidityBut = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        VHHerror = new javax.swing.JLabel();
+        HHerror = new javax.swing.JLabel();
+        LHerror = new javax.swing.JLabel();
+        VLHerror = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1065,7 +1080,7 @@ public class mainApp extends javax.swing.JFrame {
             .addGroup(DashboardCardLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
                     .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1076,7 +1091,7 @@ public class mainApp extends javax.swing.JFrame {
                     .addComponent(TemPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                     .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(HumPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(642, Short.MAX_VALUE))
+                .addContainerGap(663, Short.MAX_VALUE))
         );
 
         cardLayouts.add(DashboardCard, "DashboardCard");
@@ -1128,7 +1143,7 @@ public class mainApp extends javax.swing.JFrame {
             DataCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DataCardLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 514, Short.MAX_VALUE))
+                .addGap(0, 531, Short.MAX_VALUE))
         );
 
         cardLayouts.add(DataCard, "DataCard");
@@ -1276,7 +1291,7 @@ public class mainApp extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(RecommendationText, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addContainerGap(444, Short.MAX_VALUE))
         );
 
         cardLayouts.add(StatisticCard, "StatisticCard");
@@ -1330,8 +1345,7 @@ public class mainApp extends javax.swing.JFrame {
         VLTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         VLTemp.setForeground(new java.awt.Color(255, 255, 255));
 
-        TempButton.setBackground(new java.awt.Color(51, 51, 51));
-        TempButton.setOpaque(false);
+        TempButton.setBackground(new java.awt.Color(0, 0, 0));
         TempButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 TempButtonMouseEntered(evt);
@@ -1381,6 +1395,86 @@ public class mainApp extends javax.swing.JFrame {
         VLerror.setForeground(new java.awt.Color(255, 0, 51));
         VLerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        jLabel8.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Set the humidity levels manually");
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Very High Humidity");
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("High Humidity");
+
+        jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Low Humidity");
+
+        jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Very Low Humidity");
+
+        VHHum.setBackground(new java.awt.Color(51, 51, 51));
+        VHHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VHHum.setForeground(new java.awt.Color(255, 255, 255));
+
+        HHum.setBackground(new java.awt.Color(51, 51, 51));
+        HHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        HHum.setForeground(new java.awt.Color(255, 255, 255));
+
+        LHum.setBackground(new java.awt.Color(51, 51, 51));
+        LHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        LHum.setForeground(new java.awt.Color(255, 255, 255));
+
+        VLHum.setBackground(new java.awt.Color(51, 51, 51));
+        VLHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VLHum.setForeground(new java.awt.Color(255, 255, 255));
+
+        HumidityBut.setBackground(new java.awt.Color(0, 0, 0));
+        HumidityBut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                HumidityButMousePressed(evt);
+            }
+        });
+
+        jLabel13.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setText("Change them");
+
+        javax.swing.GroupLayout HumidityButLayout = new javax.swing.GroupLayout(HumidityBut);
+        HumidityBut.setLayout(HumidityButLayout);
+        HumidityButLayout.setHorizontalGroup(
+            HumidityButLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HumidityButLayout.createSequentialGroup()
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addGap(40, 40, 40))
+        );
+        HumidityButLayout.setVerticalGroup(
+            HumidityButLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HumidityButLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addContainerGap())
+        );
+
+        VHHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VHHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        HHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        HHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        HHerror.setText("jLabel14");
+
+        LHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        LHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LHerror.setText("jLabel14");
+
+        VLHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VLHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        VLHerror.setText("jLabel15");
+
         javax.swing.GroupLayout SettingsCardLayout = new javax.swing.GroupLayout(SettingsCard);
         SettingsCard.setLayout(SettingsCardLayout);
         SettingsCardLayout.setHorizontalGroup(
@@ -1390,71 +1484,122 @@ public class mainApp extends javax.swing.JFrame {
                     .addGroup(SettingsCardLayout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(SettingsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(SettingsCardLayout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(SettingsCardLayout.createSequentialGroup()
-                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(9, 9, 9)
+                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(SettingsCardLayout.createSequentialGroup()
-                                        .addGap(83, 83, 83)
-                                        .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SettingsCardLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(LTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(VLTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(TempButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                                .addGap(83, 83, 83)
+                                                .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SettingsCardLayout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(LTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(VLTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(TempButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SettingsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(79, 79, 79)
+                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(VHHum)
+                                    .addComponent(HHum)
+                                    .addComponent(LHum)
+                                    .addComponent(VLHum)
+                                    .addComponent(HumidityBut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(SettingsCardLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Lerror, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
                             .addComponent(Herror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(VHerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(VLerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(882, Short.MAX_VALUE))
+                            .addComponent(VLerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(375, 375, 375)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(VHHerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(HHerror, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                            .addComponent(LHerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(VLHerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(212, 212, 212))
         );
         SettingsCardLayout.setVerticalGroup(
             SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SettingsCardLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(36, 36, 36)
                 .addComponent(SettingsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(25, 25, 25)
-                .addComponent(VHerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
-                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(Herror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                        .addComponent(HHerror)
+                        .addGap(17, 17, 17))
+                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel8))
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(VHerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(VHHerror, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(VHHum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(Herror, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(HHum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
-                .addComponent(Lerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(LTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(VLerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(Lerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(LTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(LHum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(LHerror))
+                .addGap(36, 36, 36)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(VLHerror)
+                    .addComponent(VLerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(VLTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(VLTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(VLHum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(TempButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(969, Short.MAX_VALUE))
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(HumidityBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TempButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(972, Short.MAX_VALUE))
         );
 
         cardLayouts.add(SettingsCard, "SettingsCard");
@@ -1557,7 +1702,7 @@ public class mainApp extends javax.swing.JFrame {
         try{
             try{
                 VHT=Integer.parseInt(VHTemp.getText());
-                VHerror.setText("Temp set!");
+                VHerror.setText("Humidity set!");
                 VHerror.setForeground(Color.green);
             }
             catch(NumberFormatException ex)
@@ -1599,7 +1744,7 @@ public class mainApp extends javax.swing.JFrame {
             {
                 if(VHT>LT)
                 {
-                    TempVeryHigh = VHT;
+                    TempVeryHigh= VHT;
                     TempHigh = HT;
                     TempLow = LT;
                     TempVeryLow = VLT;
@@ -1647,14 +1792,104 @@ public class mainApp extends javax.swing.JFrame {
     private void TempButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseEntered
 
         setCursor(new Cursor(Cursor.HAND_CURSOR));
-        TempButton.setOpaque(true);
-        TempButton.setBackground(Color.black);
     }//GEN-LAST:event_TempButtonMouseEntered
 
     private void TempButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseExited
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        TempButton.setOpaque(false);
     }//GEN-LAST:event_TempButtonMouseExited
+
+    private void HumidityButMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMousePressed
+//HUMIDITY DUMB ASS
+        int VHT=0, HT=0, LT=0, VLT=0; //temperature levels
+        try{
+            try{
+                VHT=Integer.parseInt(VHHum.getText());
+                VHHerror.setText("Humidity set!");
+                VHHerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                VHHerror.setText("Not a number");
+                VHHerror.setForeground(Color.red);
+            }
+            try{
+                HT=Integer.parseInt(HHum.getText());
+                HHerror.setText("Humidity set!");
+                HHerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                HHerror.setText("Not a number");
+                HHerror.setForeground(Color.red);
+            }
+            try{
+                LT=Integer.parseInt(LHum.getText());
+                LHerror.setText("Humidity set!");
+                LHerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                LHerror.setText("Not a number");
+                LHerror.setForeground(Color.red);
+            }
+            try{
+                VLT=Integer.parseInt(VLHum.getText());
+                VLHerror.setText("Humidity set!");
+                VLHerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                VLHerror.setText("Not a number");
+                VLHerror.setForeground(Color.red);
+            }
+            if(VHT>HT && LT>VLT)
+            {
+                if(VHT>LT)
+                {
+                    HumiVeryHigh= VHT;
+                    HumiHigh = HT;
+                    HumiLow = LT;
+                    HumiVeryLow = VLT;
+                    System.out.println("done "+VHT+" "+HT +" lt "+ LT + " VLT "+VLT);
+                }
+                else if(LT>VHT)
+                {
+                    LHerror.setForeground(Color.red);
+                    LHerror.setText("Low Hum cant be higher than Very high");
+                }
+                if(LT>HT)
+                {
+                    LHerror.setForeground(Color.red);
+                    LHerror.setText("Low Hum cant be higher than high");
+                }
+            }
+            else if(HT>VHT)
+            {
+                HHerror.setForeground(Color.red);
+                HHerror.setText("High Hum cant be higher than Very High");
+                if(VLT>HT)
+                {
+                    VLHerror.setForeground(Color.red);
+                    VLHerror.setText("Very Low cant be higher than High");  
+                }
+                if(VLT>LT)
+                {
+                    LHerror.setForeground(Color.red);
+                    LHerror.setText("Low Hum cant be higher than High");
+                }
+            }
+            if(VLT>LT)
+            {
+                VLHerror.setForeground(Color.red);
+                VLHerror.setText("Very Low Hum cant be higher than Low");
+            }
+           
+        }catch(NumberFormatException ex)
+        {
+            System.out.println("Unexpected");
+        }
+        
+    }//GEN-LAST:event_HumidityButMousePressed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1705,12 +1940,17 @@ public class mainApp extends javax.swing.JFrame {
     private rojerusan.RSButtonPane ExitButton;
     private javax.swing.JLabel ExitLabel;
     private keeptoo.KGradientPanel GradientMAIN;
+    private javax.swing.JLabel HHerror;
+    private javax.swing.JTextField HHum;
     private javax.swing.JTextField HTemp;
     private javax.swing.JLabel Herror;
     private javax.swing.JPanel HumLineChart;
     private javax.swing.JPanel HumPieChart;
     private javax.swing.JSlider HumSlider;
     private javax.swing.JLabel HumiStatsLabel;
+    private javax.swing.JPanel HumidityBut;
+    private javax.swing.JLabel LHerror;
+    private javax.swing.JTextField LHum;
     private javax.swing.JTextField LTemp;
     private javax.swing.JPanel LeftNav;
     private javax.swing.JLabel Lerror;
@@ -1734,19 +1974,29 @@ public class mainApp extends javax.swing.JFrame {
     private javax.swing.JPanel TempButton;
     private javax.swing.JPanel TempLineChart;
     private javax.swing.JLabel TempStatsLabel;
+    private javax.swing.JLabel VHHerror;
+    private javax.swing.JTextField VHHum;
     private javax.swing.JTextField VHTemp;
     private javax.swing.JLabel VHerror;
+    private javax.swing.JLabel VLHerror;
+    private javax.swing.JTextField VLHum;
     private javax.swing.JTextField VLTemp;
     private javax.swing.JLabel VLerror;
     private javax.swing.JLabel Welcome_userLabe;
     private javax.swing.JPanel cardLayouts;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
