@@ -11,6 +11,7 @@ import java.io.*;
  * @author panos
  */
 public class Save {
+    boolean katse = false;
     Save(User user, int yes, String search, String password, String wrongname) throws IOException, ClassNotFoundException{
         if(yes == 1)
         {
@@ -28,8 +29,6 @@ public class Save {
         String tempSearch = file;
         file = file + ".ser";
         //---------------------------------------------
-        //username
-        //search = search + ".ser";//filename
         try{
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -37,9 +36,7 @@ public class Save {
             in.close();
             fileIn.close();
             System.out.println("Username already exist");
-            //System.out.println("tempsearch : " + tempSearch + " password : " +password);
-            //Encryption test = new Encryption(user, yes, tempSearch, password);
-            //String found = "Found";
+            wrongname="Username already exist";
         }
         catch(IOException ex)//ama den uparxei user 
         {
@@ -61,14 +58,6 @@ public class Save {
             
         }
         System.out.println(user.name+ " : onoma user " + tempSearch + " :temp");
-        /*if(search.equals(user.name))
-        {
-            System.out.println("Already exist");
-        }
-        else{
-            //========================
-
-        }*/
     }
     public void loadUser(User user, int yes, String search, String password, String wrongname) throws ClassNotFoundException
     {
@@ -83,14 +72,24 @@ public class Save {
             System.out.println("onoma : " + user.name + " kodikos : "+ user.password + " key : "+ user.key );
             System.out.println("tempsearch : " + tempSearch + " password : " +password);
             Encryption test = new Encryption(user, yes, tempSearch, password);
-            //String found = "Found";
         }
         catch(IOException ex)//ama den uparxei user 
         {
-            System.out.println("IOException is caught");
             System.out.println("No user found :(");
-            //String notFound = "User not found";
+            katse = true;
         }
+    }
+    public String wrongUser(){
+        String NoUser;
+        if(katse==true)
+        {
+            NoUser = "Incorrect username and/or password";
+        }
+        else
+        {
+            NoUser ="";
+        }
+        return NoUser;
     }
 }
 

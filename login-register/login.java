@@ -19,7 +19,7 @@ public class login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
-    public String wrongname = " ";
+    public static String wrongname = "";
     public login() {
         initComponents();
 
@@ -45,6 +45,8 @@ public class login extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         WrongText = new javax.swing.JLabel();
+        WRONGNAME = new javax.swing.JLabel();
+        WRONG = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Login"); // NOI18N
@@ -110,6 +112,7 @@ public class login extends javax.swing.JFrame {
         });
 
         WrongText.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        WrongText.setForeground(new java.awt.Color(255, 51, 51));
         WrongText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         WrongText.setName(""); // NOI18N
         WrongText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -117,6 +120,14 @@ public class login extends javax.swing.JFrame {
                 WrongTextPropertyChange(evt);
             }
         });
+
+        WRONGNAME.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        WRONGNAME.setForeground(new java.awt.Color(255, 51, 51));
+        WRONGNAME.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        WRONG.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        WRONG.setForeground(new java.awt.Color(255, 51, 51));
+        WRONG.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -134,6 +145,8 @@ public class login extends javax.swing.JFrame {
                             .addComponent(WrongText, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(WRONG, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(WRONGNAME, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(passwordf, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -155,11 +168,15 @@ public class login extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
-                .addGap(53, 53, 53)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(WRONGNAME, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93)
+                .addGap(21, 21, 21)
+                .addComponent(WRONG, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordf, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,7 +184,7 @@ public class login extends javax.swing.JFrame {
                 .addComponent(WrongText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(463, Short.MAX_VALUE))
+                .addContainerGap(530, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,17 +214,57 @@ public class login extends javax.swing.JFrame {
         User user = new User();
         String search = username.getText();//name
         String password = passwordf.getText();//
-        
+        System.out.println("wrongname 1 "+ wrongname);
         //---------------------------------------
-        int no = 0;
-        try {//goes to the constructor 0 = load 1 = save
-            Save saved = new Save(user, no, search, password, wrongname);
-        } catch (IOException ex) {
-            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        boolean wrong = false;
+        if(search.equals("") && password.equals(""))
+        {
+            WRONGNAME.setText("No username and password input");
+            wrong=true;
         }
-        
+        else if(search.equals(""))
+        {
+            WRONGNAME.setText("No username input");
+            wrong=true;
+        }
+        else if(password.equals(""))
+        {
+             WRONG.setText("No password input");
+             wrong=true;
+        }
+        //-----------------------
+        if(!"".equals(password)&&!"".equals(search))
+        {
+            WRONGNAME.setText("");
+            WRONG.setText("");
+            wrong=false;
+        }
+        else if(!"".equals(search))
+        {
+            WRONGNAME.setText("");
+            wrong=false;
+        }
+        else if(!"".equals(password))
+        {
+            WRONG.setText("");
+            wrong=false;
+        }
+        int no = 0;
+        if(wrong==false)
+        {
+            try {//goes to the constructor 0 = load 1 = save
+            Save saved = new Save(user, no, search, password, wrongname);
+            System.out.println(saved.wrongUser());
+            if(!"".equals(saved.wrongUser()))
+            {
+                WrongText.setText(saved.wrongUser());
+            }
+            } catch (IOException ex) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+            Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -241,14 +298,11 @@ public class login extends javax.swing.JFrame {
         if (users.equals(user.name) && password.equals(user.password))
         {
             System.out.println("sosto!");
-
             //new mainApp().setVisible(true);  un-comment when ready
             this.dispose();
         } 
         else 
         {
-            //WrongText.setText("Wronggggggggggggggg");//cannot be called from here
-            //super.update(this.getGraphics());
             System.out.println("wrong username or/and password");
         }
     }
@@ -290,6 +344,8 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel WRONG;
+    private javax.swing.JLabel WRONGNAME;
     private javax.swing.JLabel WrongText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
