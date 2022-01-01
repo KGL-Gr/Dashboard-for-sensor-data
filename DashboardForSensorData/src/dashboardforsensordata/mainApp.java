@@ -3,6 +3,8 @@ package dashboardforsensordata;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +45,7 @@ import org.jfree.data.general.DefaultPieDataset;
  */
 
 public class mainApp extends javax.swing.JFrame {
-    
+ 
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
     Color Default = new Color(23, 23, 69);          // Commonly used.
     CardLayout card;                                // Card Layout.
@@ -67,8 +69,7 @@ public class mainApp extends javax.swing.JFrame {
     int[] MonthEndsIn = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int TempVeryHigh = 16, TempHigh = 12, TempLow = 8, TempVeryLow = 4;
     int HumiVeryHigh = 90, HumiHigh = 65, HumiLow = 45, HumiVeryLow = 20;
-    
-    
+    User user;
     public class StructuredData{
         String Date;
         double Humidity;
@@ -358,12 +359,24 @@ public class mainApp extends javax.swing.JFrame {
     }
     
     public mainApp() throws IOException {
-
+        
+        addWindowListener(new WindowAdapter() {//puts the display name and admin
+            @Override
+            public void windowOpened(WindowEvent e) {
+                String usa = User.getDisplayName(); 
+                Welcome_userLabe.setText("Welcome " +usa);
+                if(!"".equals(user.getId()))
+                {
+                    Admin.setVisible(true);
+                }
+            }
+            });
         ReadData();
         ListData();
         System.out.println(list.toString());
         initComponents();
-
+        
+        Admin.setVisible(false);
         DataTable.setBackground(new Color(0, 0, 0, 0));
         jScrollPane1.setBackground(new Color(0, 0, 0, 0));
         DataTable.setOpaque(false);
@@ -709,6 +722,7 @@ public class mainApp extends javax.swing.JFrame {
         SettingsLabel = new javax.swing.JLabel();
         ExitButton = new rojerusan.RSButtonPane();
         ExitLabel = new javax.swing.JLabel();
+        Admin = new javax.swing.JLabel();
         PresentPanel = new javax.swing.JPanel();
         cardLayouts = new javax.swing.JPanel();
         GradientMAIN = new keeptoo.KGradientPanel();
@@ -914,6 +928,12 @@ public class mainApp extends javax.swing.JFrame {
         );
 
         LeftNav.add(ExitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 230, 80));
+
+        Admin.setBackground(new java.awt.Color(255, 255, 255));
+        Admin.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        Admin.setForeground(new java.awt.Color(255, 255, 255));
+        Admin.setText("Admin");
+        LeftNav.add(Admin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 60, -1));
 
         getContentPane().add(LeftNav, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 900));
 
@@ -1311,6 +1331,7 @@ public class mainApp extends javax.swing.JFrame {
     }//GEN-LAST:event_DataButtonMousePressed
 
     private void DashboardButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardButtonMousePressed
+
         try {
             SelectionFromLeftNav(0);
         } catch (IOException ex) {
@@ -1385,6 +1406,7 @@ public class mainApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Admin;
     private javax.swing.JLabel AppName;
     private rojerusan.RSButtonPane DashboardButton;
     private keeptoo.KGradientPanel DashboardCard;
