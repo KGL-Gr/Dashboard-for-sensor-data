@@ -48,15 +48,13 @@ public class Encryption {
         encrypt(user);
     }
     private void getkey(){// deixnei to key
-        System.out.println();
         for(Character x : pin)
         {
-            System.out.println(x);
+            //System.out.println(x);
         }
-        System.out.println();
         for(Character x : randomPin)
         {
-            System.out.println(x);
+            //System.out.println(x);
         }
     }
     private void encrypt(User user){ //kanei to encryption
@@ -78,13 +76,12 @@ public class Encryption {
         for(i=0;i<pass.length;i++)
         {
             user.password = user.password + String.valueOf(pass[i]);
-            System.out.println(user.password);
         }
         //deixnei to password
-        for(Character x : pass)
+        /*for(Character x : pass)
         {
-            System.out.println(x);
-        }
+            System.out.println();
+        }*/
     }
     public void decrypt(User user, String search, String password){//decryption
         int i=0, j=0;
