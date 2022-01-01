@@ -3,6 +3,7 @@ package dashboardforsensordata;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -365,7 +366,7 @@ public class mainApp extends javax.swing.JFrame {
             public void windowOpened(WindowEvent e) {
                 String usa = User.getDisplayName(); 
                 Welcome_userLabe.setText("Welcome " +usa);
-                if(!"".equals(user.getId()))
+                if(!"".equals(User.getId()))
                 {
                     Admin.setVisible(true);
                 }
@@ -749,6 +750,22 @@ public class mainApp extends javax.swing.JFrame {
         RecommendationLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         SettingsCard = new keeptoo.KGradientPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        VHTemp = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        SettingsAdmin = new javax.swing.JLabel();
+        HTemp = new javax.swing.JTextField();
+        LTemp = new javax.swing.JTextField();
+        VLTemp = new javax.swing.JTextField();
+        TempButton = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        VHerror = new javax.swing.JLabel();
+        Herror = new javax.swing.JLabel();
+        Lerror = new javax.swing.JLabel();
+        VLerror = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1267,15 +1284,177 @@ public class mainApp extends javax.swing.JFrame {
         SettingsCard.setkEndColor(new java.awt.Color(17, 0, 173));
         SettingsCard.setkStartColor(new java.awt.Color(27, 27, 75));
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Set the temperature levels manually");
+
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Very High Temperature");
+
+        VHTemp.setBackground(new java.awt.Color(51, 51, 51));
+        VHTemp.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        VHTemp.setForeground(new java.awt.Color(255, 255, 255));
+        VHTemp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VHTempActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("High Temperature");
+
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Low Temperature");
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Very Low Temperature");
+
+        SettingsAdmin.setBackground(new java.awt.Color(102, 0, 204));
+        SettingsAdmin.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        SettingsAdmin.setForeground(new java.awt.Color(102, 0, 204));
+        SettingsAdmin.setText("Admin");
+
+        HTemp.setBackground(new java.awt.Color(51, 51, 51));
+        HTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        HTemp.setForeground(new java.awt.Color(255, 255, 255));
+
+        LTemp.setBackground(new java.awt.Color(51, 51, 51));
+        LTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        LTemp.setForeground(new java.awt.Color(255, 255, 255));
+
+        VLTemp.setBackground(new java.awt.Color(51, 51, 51));
+        VLTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VLTemp.setForeground(new java.awt.Color(255, 255, 255));
+
+        TempButton.setBackground(new java.awt.Color(51, 51, 51));
+        TempButton.setOpaque(false);
+        TempButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                TempButtonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                TempButtonMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                TempButtonMousePressed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(204, 204, 255));
+        jLabel5.setText("Change them");
+
+        javax.swing.GroupLayout TempButtonLayout = new javax.swing.GroupLayout(TempButton);
+        TempButton.setLayout(TempButtonLayout);
+        TempButtonLayout.setHorizontalGroup(
+            TempButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TempButtonLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabel5)
+                .addContainerGap(38, Short.MAX_VALUE))
+        );
+        TempButtonLayout.setVerticalGroup(
+            TempButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TempButtonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        VHerror.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        VHerror.setForeground(new java.awt.Color(255, 0, 51));
+        VHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Herror.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        Herror.setForeground(new java.awt.Color(204, 0, 51));
+        Herror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        Lerror.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        Lerror.setForeground(new java.awt.Color(204, 0, 51));
+        Lerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        VLerror.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        VLerror.setForeground(new java.awt.Color(255, 0, 51));
+        VLerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout SettingsCardLayout = new javax.swing.GroupLayout(SettingsCard);
         SettingsCard.setLayout(SettingsCardLayout);
         SettingsCardLayout.setHorizontalGroup(
             SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1370, Short.MAX_VALUE)
+            .addGroup(SettingsCardLayout.createSequentialGroup()
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(SettingsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                                        .addGap(83, 83, 83)
+                                        .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SettingsCardLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(LTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(VLTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(TempButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(SettingsCardLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Lerror, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                            .addComponent(Herror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(VHerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(VLerror, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(882, Short.MAX_VALUE))
         );
         SettingsCardLayout.setVerticalGroup(
             SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1413, Short.MAX_VALUE)
+            .addGroup(SettingsCardLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(SettingsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(25, 25, 25)
+                .addComponent(VHerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(Herror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addComponent(Lerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(LTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(VLerror, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21)
+                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(VLTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(TempButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(969, Short.MAX_VALUE))
         );
 
         cardLayouts.add(SettingsCard, "SettingsCard");
@@ -1368,6 +1547,114 @@ public class mainApp extends javax.swing.JFrame {
         giveHumiAdvice();
         RecommendationLabel1.setForeground(Color.YELLOW);
     }//GEN-LAST:event_RecommendationHumiButtonMouseClicked
+
+    private void VHTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VHTempActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_VHTempActionPerformed
+
+    private void TempButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMousePressed
+        int VHT=0, HT=0, LT=0, VLT=0; //temperature levels
+        try{
+            try{
+                VHT=Integer.parseInt(VHTemp.getText());
+                VHerror.setText("Temp set!");
+                VHerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                VHerror.setText("Not a number");
+                VHerror.setForeground(Color.red);
+            }
+            try{
+                HT=Integer.parseInt(HTemp.getText());
+                Herror.setText("Temp set!");
+                Herror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                Herror.setText("Not a number");
+                Herror.setForeground(Color.red);
+            }
+            try{
+                LT=Integer.parseInt(LTemp.getText());
+                Lerror.setText("Temp set!");
+                Lerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                Lerror.setText("Not a number");
+                Lerror.setForeground(Color.red);
+            }
+            try{
+                VLT=Integer.parseInt(VLTemp.getText());
+                VLerror.setText("Temp set!");
+                VLerror.setForeground(Color.green);
+            }
+            catch(NumberFormatException ex)
+            {
+                VLerror.setText("Not a number");
+                VLerror.setForeground(Color.red);
+            }
+            if(VHT>HT && LT>VLT)
+            {
+                if(VHT>LT)
+                {
+                    TempVeryHigh = VHT;
+                    TempHigh = HT;
+                    TempLow = LT;
+                    TempVeryLow = VLT;
+                    System.out.println("done "+VHT+" "+HT +" lt "+ LT + " VLT "+VLT);
+                }
+                else if(LT>VHT)
+                {
+                    Lerror.setForeground(Color.red);
+                    Lerror.setText("Low Temp cant be higher than Very high");
+                }
+                if(LT>HT)
+                {
+                    Lerror.setForeground(Color.red);
+                    Lerror.setText("Low Temp cant be higher than high");
+                }
+            }
+            else if(HT>VHT)
+            {
+                Herror.setForeground(Color.red);
+                Herror.setText("High temp cant be higher than Very High");
+                if(VLT>HT)
+                {
+                    VLerror.setForeground(Color.red);
+                    VLerror.setText("Very Low cant be higher than High");  
+                }
+                if(VLT>LT)
+                {
+                    Lerror.setForeground(Color.red);
+                    Lerror.setText("Low Temp cant be higher than High");
+                }
+            }
+            if(VLT>LT)
+            {
+                VLerror.setForeground(Color.red);
+                VLerror.setText("Very Low Temp cant be higher than Low");
+            }
+           
+        }catch(NumberFormatException ex)
+        {
+            System.out.println("Unexpected");
+        }   
+        
+    }//GEN-LAST:event_TempButtonMousePressed
+
+    private void TempButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseEntered
+
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        TempButton.setOpaque(true);
+        TempButton.setBackground(Color.black);
+    }//GEN-LAST:event_TempButtonMouseEntered
+
+    private void TempButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseExited
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        TempButton.setOpaque(false);
+    }//GEN-LAST:event_TempButtonMouseExited
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1418,17 +1705,22 @@ public class mainApp extends javax.swing.JFrame {
     private rojerusan.RSButtonPane ExitButton;
     private javax.swing.JLabel ExitLabel;
     private keeptoo.KGradientPanel GradientMAIN;
+    private javax.swing.JTextField HTemp;
+    private javax.swing.JLabel Herror;
     private javax.swing.JPanel HumLineChart;
     private javax.swing.JPanel HumPieChart;
     private javax.swing.JSlider HumSlider;
     private javax.swing.JLabel HumiStatsLabel;
+    private javax.swing.JTextField LTemp;
     private javax.swing.JPanel LeftNav;
+    private javax.swing.JLabel Lerror;
     private javax.swing.JPanel PresentPanel;
     private rojerusan.RSButtonPane RecommendationHumiButton;
     private javax.swing.JLabel RecommendationLabel;
     private javax.swing.JLabel RecommendationLabel1;
     private rojerusan.RSButtonPane RecommendationTempButton;
     private javax.swing.JLabel RecommendationText;
+    private javax.swing.JLabel SettingsAdmin;
     private rojerusan.RSButtonPane SettingsButton;
     private keeptoo.KGradientPanel SettingsCard;
     private javax.swing.JLabel SettingsLabel;
@@ -1439,11 +1731,22 @@ public class mainApp extends javax.swing.JFrame {
     private javax.swing.JPanel TemHumBarChart;
     private javax.swing.JPanel TemPieChart;
     private javax.swing.JSlider TemSlider;
+    private javax.swing.JPanel TempButton;
     private javax.swing.JPanel TempLineChart;
     private javax.swing.JLabel TempStatsLabel;
+    private javax.swing.JTextField VHTemp;
+    private javax.swing.JLabel VHerror;
+    private javax.swing.JTextField VLTemp;
+    private javax.swing.JLabel VLerror;
     private javax.swing.JLabel Welcome_userLabe;
     private javax.swing.JPanel cardLayouts;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
