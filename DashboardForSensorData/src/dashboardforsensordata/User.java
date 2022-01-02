@@ -26,8 +26,8 @@ public class User implements Serializable {
         return displayName;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public static void setId(String id) {
+        User.id = id;
     }
 
     public static String getId() {
