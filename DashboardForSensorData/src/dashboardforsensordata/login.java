@@ -6,6 +6,7 @@ package dashboardforsensordata;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,10 @@ public class login extends javax.swing.JFrame {
     /**
      * Creates new form login
      */
+    //global
     public static String wrongname = "";
+    boolean wrongPass=false;
+    //global
     public login() {
         initComponents();
 
@@ -41,7 +45,6 @@ public class login extends javax.swing.JFrame {
         username = new RoundJTextField(15);
         jLabel3 = new javax.swing.JLabel();
         passwordf = new RoundJPasswordField(15);
-        loginButton = new java.awt.Button();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -81,14 +84,6 @@ public class login extends javax.swing.JFrame {
         passwordf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 passwordfActionPerformed(evt);
-            }
-        });
-
-        loginButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        loginButton.setLabel("Log in");
-        loginButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginButtonActionPerformed(evt);
             }
         });
 
@@ -191,9 +186,6 @@ public class login extends javax.swing.JFrame {
                                     .addGap(18, 18, 18)
                                     .addComponent(jLabel5)))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(692, 692, 692)
-                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(641, 641, 641)
                         .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -226,9 +218,7 @@ public class login extends javax.swing.JFrame {
                 .addComponent(WrongText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(435, Short.MAX_VALUE))
+                .addContainerGap(497, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -329,6 +319,7 @@ public class login extends javax.swing.JFrame {
             Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         LoginButton.setBackground(Color.red);
     }//GEN-LAST:event_LoginButtonMousePressed
 
@@ -344,33 +335,30 @@ public class login extends javax.swing.JFrame {
         setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         LoginButton.setOpaque(false);
     }//GEN-LAST:event_LoginButtonMouseExited
-
-    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_loginButtonActionPerformed
     public login(User user, String search, String password) {
         showMessage(user, search, password); //=================================================
     }
 
     public void showMessage(User user, String search, String password){
-        String users = search;
+        //String users = search;
         User use = new User();
         use.setDisplayName(search);
-
-        if (users.equals(user.name) && password.equals(user.password))
+     
+        if (search.equals(user.name) && password.equals(user.password))
         {
+            System.out.println("ID "+ User.id);
             try {
-                this.dispose();
+                this.dispose(); //might need to be on an event
                 new mainApp().setVisible(true);  //un-comment when ready
             } catch (IOException ex) {
                 Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //login.setVisible(false);
             System.out.println("correct!");
         } 
         else 
         {
             System.out.println("wrong username or/and password");
+            wrongPass= true;
         }
     }
     /**
@@ -422,7 +410,6 @@ public class login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private java.awt.Button loginButton;
     private javax.swing.JPasswordField passwordf;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
