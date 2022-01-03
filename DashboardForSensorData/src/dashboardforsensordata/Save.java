@@ -26,7 +26,7 @@ public class Save {
     //apothikeuei ta stoixia tou user se enan ser file(prepei na alaksoume topo8esia)
     public void saveUser(User user, int yes, String search, String password, String wrongname) throws FileNotFoundException, IOException, ClassNotFoundException
     {
-        String file = user.name;//files name is the username
+        String file = user.name;//to file exei to onoma tou user
         String tempSearch = file;
         file = file + ".ser";
         //---------------------------------------------
@@ -38,7 +38,7 @@ public class Save {
             fileIn.close();
             exist = true;
         }
-        catch(IOException ex)//if no user exist already 
+        catch(IOException ex)//ama den uparxei user 
         {
             System.out.println("No user found registration OK");
             //====================================================
@@ -59,18 +59,19 @@ public class Save {
     }
     public void loadUser(User user, int yes, String search, String password, String wrongname) throws ClassNotFoundException
     {
+        
         String tempSearch = search;//username
         search = search + ".ser";//filename
         try{
             FileInputStream fileIn = new FileInputStream(search);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             user = (User)in.readObject();
-            User.setId(user.id);
             in.close();
             fileIn.close();
             Encryption test = new Encryption(user, yes, tempSearch, password);
+            
         }
-        catch(IOException ex)//if no user exist
+        catch(IOException ex)//ama den uparxei user 
         {
             System.out.println("No user found :(");
             wrongUser = true;

@@ -73,6 +73,8 @@ public class mainApp extends javax.swing.JFrame {
     int TempVeryHigh = 16, TempHigh = 12, TempLow = 8, TempVeryLow = 4;
     int HumiVeryHigh = 90, HumiHigh = 65, HumiLow = 45, HumiVeryLow = 20;
     User user;
+    boolean isAdmin=false;
+    
     public class StructuredData{
         String Date;
         double Humidity;
@@ -372,9 +374,10 @@ public class mainApp extends javax.swing.JFrame {
             public void windowOpened(WindowEvent e) {
                 String usa = User.getDisplayName(); 
                 Welcome_userLabe.setText("Welcome " +usa);
-                if(User.getId()!=null)
+                if(User.getdisplayID()!=null && !"".equals(User.getdisplayID()))
                 {
                     Admin.setVisible(true);
+                    isAdmin=true;
                 }
             }
             });
@@ -786,6 +789,8 @@ public class mainApp extends javax.swing.JFrame {
         HHerror = new javax.swing.JLabel();
         LHerror = new javax.swing.JLabel();
         VLHerror = new javax.swing.JLabel();
+        DENIED = new keeptoo.KGradientPanel();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1085,7 +1090,7 @@ public class mainApp extends javax.swing.JFrame {
             .addGroup(DashboardCardLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1096,7 +1101,7 @@ public class mainApp extends javax.swing.JFrame {
                     .addComponent(TemPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                     .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(HumPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(665, Short.MAX_VALUE))
+                .addContainerGap(678, Short.MAX_VALUE))
         );
 
         cardLayouts.add(DashboardCard, "DashboardCard");
@@ -1318,6 +1323,7 @@ public class mainApp extends javax.swing.JFrame {
 
         VHTemp.setBackground(new java.awt.Color(51, 51, 51));
         VHTemp.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        VHTemp.setForeground(new java.awt.Color(255, 255, 255));
         VHTemp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VHTempActionPerformed(evt);
@@ -1338,12 +1344,15 @@ public class mainApp extends javax.swing.JFrame {
 
         HTemp.setBackground(new java.awt.Color(51, 51, 51));
         HTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        HTemp.setForeground(new java.awt.Color(255, 255, 255));
 
         LTemp.setBackground(new java.awt.Color(51, 51, 51));
         LTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        LTemp.setForeground(new java.awt.Color(255, 255, 255));
 
         VLTemp.setBackground(new java.awt.Color(51, 51, 51));
         VLTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VLTemp.setForeground(new java.awt.Color(255, 255, 255));
 
         TempButton.setBackground(new java.awt.Color(60, 60, 183));
         TempButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1417,15 +1426,19 @@ public class mainApp extends javax.swing.JFrame {
 
         VHHum.setBackground(new java.awt.Color(51, 51, 51));
         VHHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VHHum.setForeground(new java.awt.Color(255, 255, 255));
 
         HHum.setBackground(new java.awt.Color(51, 51, 51));
         HHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        HHum.setForeground(new java.awt.Color(255, 255, 255));
 
         LHum.setBackground(new java.awt.Color(51, 51, 51));
         LHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        LHum.setForeground(new java.awt.Color(255, 255, 255));
 
         VLHum.setBackground(new java.awt.Color(51, 51, 51));
         VLHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VLHum.setForeground(new java.awt.Color(255, 255, 255));
 
         HumidityBut.setBackground(new java.awt.Color(60, 60, 183));
         HumidityBut.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1596,6 +1609,22 @@ public class mainApp extends javax.swing.JFrame {
 
         cardLayouts.add(SettingsCard, "SettingsCard");
 
+        DENIED.setkEndColor(new java.awt.Color(17, 0, 173));
+        DENIED.setkGradientFocus(2000);
+        DENIED.setkStartColor(new java.awt.Color(27, 27, 75));
+        DENIED.setkTransparentControls(false);
+        DENIED.setMinimumSize(new java.awt.Dimension(1600, 900));
+        DENIED.setPreferredSize(new java.awt.Dimension(1600, 900));
+        DENIED.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 80)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(204, 0, 51));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("ACCESS DENIED");
+        DENIED.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 870, -1));
+
+        cardLayouts.add(DENIED, "DENIED");
+
         PresentPanel.add(cardLayouts, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(PresentPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 1370, 900));
@@ -1611,18 +1640,29 @@ public class mainApp extends javax.swing.JFrame {
     private void ExitButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExitButtonMousePressed
 
         ExitButton.setBackground(new Color(11, 11, 33));
-        System.exit(0);
+        this.dispose();
     }//GEN-LAST:event_ExitButtonMousePressed
 
     private void SettingsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SettingsButtonMousePressed
-
-        card.show(cardLayouts, "SettingsCard");
-        try {
-            SelectionFromLeftNav(3);
-        } catch (IOException ex) {
-            Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+        if(isAdmin)
+        {
+            card.show(cardLayouts, "SettingsCard");
+            try {
+                SelectionFromLeftNav(3);
+            }
+            catch (IOException ex) {
+                 Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
+        else
+        {
+            card.show(cardLayouts, "DENIED");
+            try {
+                SelectionFromLeftNav(3);
+            } catch (IOException ex) {
+                Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_SettingsButtonMousePressed
 
     private void StatisticsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StatisticsButtonMousePressed
@@ -1919,6 +1959,7 @@ public class mainApp extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Admin;
     private javax.swing.JLabel AppName;
+    private keeptoo.KGradientPanel DENIED;
     private rojerusan.RSButtonPane DashboardButton;
     private keeptoo.KGradientPanel DashboardCard;
     private javax.swing.JLabel DashboardLabel;
@@ -1977,6 +2018,7 @@ public class mainApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -14,10 +14,16 @@ import java.util.ArrayList;
 public class User implements Serializable {
     public String name;
     String password;
-    public static String id;
+    public String id;
     ArrayList<Character> key;
     private static String displayName;
+    private static String displayID;
+    private static boolean EnteredMain = false;
 
+    public static boolean isEnteredMain() {
+        return EnteredMain;
+    }
+    
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
@@ -26,13 +32,18 @@ public class User implements Serializable {
         return displayName;
     }
 
-    public static void setId(String id) {
-        User.id = id;
+    public void setdisplayID(String displayID) {
+        this.displayID = displayID;
     }
 
-    public static String getId() {
-        return id;
+    public static String getdisplayID() {
+        return displayID;
     }
+    public static void setEnteredMain(boolean EnteredMain) {
+        User.EnteredMain = EnteredMain;
+    }
+
+    
 
 
             

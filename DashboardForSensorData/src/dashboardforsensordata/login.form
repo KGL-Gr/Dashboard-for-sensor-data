@@ -9,7 +9,13 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1600, 900]"/>
+    </Property>
     <Property name="name" type="java.lang.String" value="Login" noResource="true"/>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1600, 900]"/>
+    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -30,18 +36,21 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel2" alignment="0" pref="1679" max="32767" attributes="0"/>
+          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel2" alignment="0" pref="1058" max="32767" attributes="0"/>
+          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanel2">
       <Properties>
+        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[1600, 900]"/>
+        </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[1600, 900]"/>
         </Property>
@@ -67,7 +76,7 @@
                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="WRONG" alignment="0" max="32767" attributes="0"/>
                                   <Component id="WRONGNAME" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="passwordf" alignment="0" pref="309" max="32767" attributes="0"/>
+                                  <Component id="passwordf" alignment="0" max="32767" attributes="0"/>
                                   <Component id="username" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
@@ -87,7 +96,7 @@
                           <Component id="jLabel1" min="-2" pref="578" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="641" max="32767" attributes="0"/>
+                  <EmptySpace pref="562" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -117,7 +126,7 @@
                   <Component id="WrongText" min="-2" pref="24" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="LoginButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="497" max="32767" attributes="0"/>
+                  <EmptySpace pref="339" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

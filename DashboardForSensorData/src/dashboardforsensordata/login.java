@@ -22,6 +22,7 @@ public class login extends javax.swing.JFrame {
      * Creates new form login
      */
     //global
+    boolean EnteredMain = false;
     public static String wrongname = "";
     boolean wrongPass=false;
     //global
@@ -55,8 +56,11 @@ public class login extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1600, 900));
         setName("Login"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(1600, 900));
 
+        jPanel2.setMaximumSize(new java.awt.Dimension(1600, 900));
         jPanel2.setMinimumSize(new java.awt.Dimension(1600, 900));
         jPanel2.setPreferredSize(new java.awt.Dimension(1600, 900));
 
@@ -178,7 +182,7 @@ public class login extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(WRONG, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(WRONGNAME, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(passwordf, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                                .addComponent(passwordf, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(username, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                     .addGap(8, 8, 8)
@@ -191,7 +195,7 @@ public class login extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(460, 460, 460)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(641, Short.MAX_VALUE))
+                .addContainerGap(562, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,18 +222,18 @@ public class login extends javax.swing.JFrame {
                 .addComponent(WrongText, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LoginButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(497, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1679, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1058, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -269,7 +273,7 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
         User user = new User();
         String search = username.getText();//name
-        String password = passwordf.getText();//
+        String password = passwordf.getText();
         //---------------------------------------
         boolean wrong = false;
         if(search.equals("") && password.equals(""))
@@ -343,22 +347,24 @@ public class login extends javax.swing.JFrame {
         //String users = search;
         User use = new User();
         use.setDisplayName(search);
-     
-        if (search.equals(user.name) && password.equals(user.password))
-        {
-            System.out.println("ID "+ User.id);
-            try {
-                this.dispose(); //might need to be on an event
-                new mainApp().setVisible(true);  //un-comment when ready
-            } catch (IOException ex) {
-                Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        use.setdisplayID(user.id);
+        if(!User.isEnteredMain()){
+            if (search.equals(user.name) && password.equals(user.password))
+            {
+                //System.out.println("ID "+ User.id);
+                try {
+                    this.dispose(); //might need to be on an event
+                    new mainApp().setVisible(true);  //un-comment when ready
+                } catch (IOException ex) {
+                    Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("correct!");
+            } 
+            else 
+            {
+                System.out.println("wrong username or/and password");
+                wrongPass= true;
             }
-            System.out.println("correct!");
-        } 
-        else 
-        {
-            System.out.println("wrong username or/and password");
-            wrongPass= true;
         }
     }
     /**
