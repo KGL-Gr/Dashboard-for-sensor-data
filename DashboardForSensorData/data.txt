@@ -1362,6 +1362,7 @@ Temperature is:  4.50
 Time is:  19:44
 Humidity is:  59.00
 Temperature is:  4.50
+
 22/12
 Time is:  21:35
 Humidity is:  88.00
