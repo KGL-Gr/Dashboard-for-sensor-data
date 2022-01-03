@@ -29,24 +29,26 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
- * DataToTable          : CAUTION! WE WANT THAT TO RUN 1 TIME! We 'll what we can do for >1 times, IF we have extra options for the user..
+ * DataToTable          : CAUTION! WE WANT THAT TO RUN 1 TIME! We 'll see what we can do for >1 times, IF we have extra options for the user..
  * FillTemp             : Fills the array for temperature. 
  * FillHum              : Fills the array for humidity.
  * ReadData             : Will read the data from the file, calls the functions above.
  * ListData             : Fills the an ArrayList with StructuredData objects. ArrayLists can do the job for this amount of data.
- * ListData(int k)      : Will run only for the linegraphs. k is the value of the respective slider.
  * SelectionFromLeftNav : Efficient as it is, not as an event handler with an interface.
  * showHumPieChart      : Will display (,20] , (20,45] , (45,65] , (65,90] , (90,) as Very High, High, OK, Low, Very Low respectively.
  * showTemPieChart      : Will display (,4] , (4,8] , (8,12] , (12,16] , (16,) asVery High, High, OK, Low, Very Low respectively.
  * showBarChart         : Will display day average for Temperature&Humidity sample values.
  * showLineTempChart    : Will display a linechart for the temperature values, also it has slider.
  * showLineHumChart     : Will display a linechart for the humidity values, also it has slider.
- * showStats()          : Will do the calculations for the Statistics table.
+ * CalcStats()          : Will do the calculations for the Statistics table.
+ * giveTempAdvice       : Will recommend the user what to do based on Very High, High, OK, Low, Very Low ratings.
+ * giveHumiAdvice       : Will recommend the user what to do based on Very High, High, OK, Low, Very Low ratings.
  * @author kgl
  */
 
 public class mainApp extends javax.swing.JFrame {
- 
+    
+    DefaultTableModel Secmodel;
     DefaultCategoryDataset dataset = new DefaultCategoryDataset();
     Color Default = new Color(23, 23, 69);          // Commonly used.
     CardLayout card;                                // Card Layout.
@@ -152,8 +154,7 @@ public class mainApp extends javax.swing.JFrame {
 
                 list.add(new StructuredData(valueOf(date % (MonthEndsIn[monthcounter % 12] + 1)) + " " + Months[monthcounter % 12], Humidity[i][j], Temperature[i][j]));
             }
-            // 31 December... Should be generalized, this is not a formal solution.
-            // Works for years 2021-2022-2023. Απόρροια αυτής της υλοποίησης είναι ο τρόπος ανάκτησης των δεδομένων και οι κακές πρακτικές στην αποθήκευσή τους.
+            // Works for years 2021-2022-2023.
 
         }
 
@@ -181,6 +182,10 @@ public class mainApp extends javax.swing.JFrame {
     
     public void CalcStats() {
         
+        Secmodel = (DefaultTableModel) jTable1.getModel();
+        Secmodel.setRowCount(0);
+        TempCounter[0] = TempCounter[1] = TempCounter[2] = TempCounter[3] = TempCounter[4] = 0;
+        HumiCounter[0] = HumiCounter[1] = HumiCounter[2] = HumiCounter[3] = HumiCounter[4] = 0;
         // Mean, Median, Prevailing, min and max values.
         double[] TempValues = new double[list.size()];
         double[] HumiValues = new double[list.size()];
@@ -188,23 +193,23 @@ public class mainApp extends javax.swing.JFrame {
         sumTemp = 0;
         sumHumi = 0;
         // They need to be recalculated because, it is possible for the user to
-        // read wrong info if he performs a sequence of actions (0,1,3,2).
+        // read wrong info if he performs a sequence of actions (0,1,3,2). Solved
         for (int i = 0; i < list.size(); i++) {
             sumTemp += list.get(i).Temperature;
             sumHumi += list.get(i).Humidity;
             TempValues[i] = list.get(i).Temperature;
             HumiValues[i] = list.get(i).Humidity;
             
-            if (list.get(i).Temperature > TempVeryHigh) {
+            if (list.get(i).Temperature > TempVeryHigh) {   // VH ...
                 TempCounter[0]++;
-            } else if (list.get(i).Temperature > TempHigh) {
+            } else if (list.get(i).Temperature > TempHigh) {// H ... VH
                 TempCounter[1]++;
-            } else if (list.get(i).Temperature > TempLow) {
+            } else if (list.get(i).Temperature > TempLow) { // L ... H
                 TempCounter[2]++;
-            } else if (list.get(i).Temperature > TempVeryLow) {
+            } else if (list.get(i).Temperature > TempVeryLow) { // VL ... L
                 TempCounter[3]++;
             } else {
-                TempCounter[4]++;
+                TempCounter[4]++;                               // ... VL
             }
             
             if (list.get(i).Humidity > HumiVeryHigh) {
@@ -263,7 +268,7 @@ public class mainApp extends javax.swing.JFrame {
         sumTemp /= list.size();
         sumHumi /= list.size();
 
-        DefaultTableModel Secmodel = (DefaultTableModel) jTable1.getModel();
+        
         Object rowData[] = new Object[3];
 
         rowData[0] = "Mean";
@@ -310,6 +315,7 @@ public class mainApp extends javax.swing.JFrame {
         rowData[1] = TempCounter[4];
         rowData[2] = HumiCounter[4];
         Secmodel.addRow(rowData);
+        
     }
     
     public void giveTempAdvice(){        
@@ -789,7 +795,7 @@ public class mainApp extends javax.swing.JFrame {
 
         AppName.setFont(new java.awt.Font("Arial", 2, 16)); // NOI18N
         AppName.setForeground(new java.awt.Color(254, 254, 254));
-        AppName.setText("NodeMCU-DHT11 Dashboard");
+        AppName.setText("ESP32-DHT11 Dashboard");
         LeftNav.add(AppName, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 230, 50));
 
         Welcome_userLabe.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -1079,7 +1085,7 @@ public class mainApp extends javax.swing.JFrame {
             .addGroup(DashboardCardLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                    .addComponent(TempLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                     .addComponent(HumLineChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(DashboardCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1090,7 +1096,7 @@ public class mainApp extends javax.swing.JFrame {
                     .addComponent(TemPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                     .addComponent(TemHumBarChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(HumPieChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(663, Short.MAX_VALUE))
+                .addContainerGap(665, Short.MAX_VALUE))
         );
 
         cardLayouts.add(DashboardCard, "DashboardCard");
@@ -1142,7 +1148,7 @@ public class mainApp extends javax.swing.JFrame {
             DataCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DataCardLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 899, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 531, Short.MAX_VALUE))
+                .addGap(0, 562, Short.MAX_VALUE))
         );
 
         cardLayouts.add(DataCard, "DataCard");
@@ -1290,8 +1296,12 @@ public class mainApp extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(RecommendationText, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(444, Short.MAX_VALUE))
+                .addContainerGap(475, Short.MAX_VALUE))
         );
+
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         cardLayouts.add(StatisticCard, "StatisticCard");
 
@@ -1308,7 +1318,6 @@ public class mainApp extends javax.swing.JFrame {
 
         VHTemp.setBackground(new java.awt.Color(51, 51, 51));
         VHTemp.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        VHTemp.setForeground(new java.awt.Color(255, 255, 255));
         VHTemp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VHTempActionPerformed(evt);
@@ -1329,17 +1338,14 @@ public class mainApp extends javax.swing.JFrame {
 
         HTemp.setBackground(new java.awt.Color(51, 51, 51));
         HTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        HTemp.setForeground(new java.awt.Color(255, 255, 255));
 
         LTemp.setBackground(new java.awt.Color(51, 51, 51));
         LTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        LTemp.setForeground(new java.awt.Color(255, 255, 255));
 
         VLTemp.setBackground(new java.awt.Color(51, 51, 51));
         VLTemp.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        VLTemp.setForeground(new java.awt.Color(255, 255, 255));
 
-        TempButton.setBackground(new java.awt.Color(0, 0, 0));
+        TempButton.setBackground(new java.awt.Color(60, 60, 183));
         TempButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 TempButtonMouseEntered(evt);
@@ -1352,8 +1358,8 @@ public class mainApp extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(204, 204, 255));
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(254, 254, 254));
         jLabel5.setText("Change them");
 
         javax.swing.GroupLayout TempButtonLayout = new javax.swing.GroupLayout(TempButton);
@@ -1363,7 +1369,7 @@ public class mainApp extends javax.swing.JFrame {
             .addGroup(TempButtonLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel5)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         TempButtonLayout.setVerticalGroup(
             TempButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1373,19 +1379,19 @@ public class mainApp extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        VHerror.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        VHerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         VHerror.setForeground(new java.awt.Color(255, 0, 51));
         VHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        Herror.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        Herror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Herror.setForeground(new java.awt.Color(204, 0, 51));
         Herror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        Lerror.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        Lerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Lerror.setForeground(new java.awt.Color(204, 0, 51));
         Lerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        VLerror.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        VLerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         VLerror.setForeground(new java.awt.Color(255, 0, 51));
         VLerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -1393,39 +1399,35 @@ public class mainApp extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Set the humidity levels manually");
 
-        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Very High Humidity");
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("High Humidity");
 
-        jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Low Humidity");
 
-        jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Very Low Humidity");
 
         VHHum.setBackground(new java.awt.Color(51, 51, 51));
         VHHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        VHHum.setForeground(new java.awt.Color(255, 255, 255));
 
         HHum.setBackground(new java.awt.Color(51, 51, 51));
         HHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        HHum.setForeground(new java.awt.Color(255, 255, 255));
 
         LHum.setBackground(new java.awt.Color(51, 51, 51));
         LHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        LHum.setForeground(new java.awt.Color(255, 255, 255));
 
         VLHum.setBackground(new java.awt.Color(51, 51, 51));
         VLHum.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        VLHum.setForeground(new java.awt.Color(255, 255, 255));
 
-        HumidityBut.setBackground(new java.awt.Color(0, 0, 0));
+        HumidityBut.setBackground(new java.awt.Color(60, 60, 183));
         HumidityBut.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 HumidityButMouseEntered(evt);
@@ -1439,7 +1441,7 @@ public class mainApp extends javax.swing.JFrame {
         });
 
         jLabel13.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Change them");
 
@@ -1460,16 +1462,16 @@ public class mainApp extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        VHHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VHHerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         VHHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        HHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        HHerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         HHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        LHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        LHerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         LHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        VLHerror.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        VLHerror.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         VLHerror.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout SettingsCardLayout = new javax.swing.GroupLayout(SettingsCard);
@@ -1493,44 +1495,45 @@ public class mainApp extends javax.swing.JFrame {
             .addGroup(SettingsCardLayout.createSequentialGroup()
                 .addGap(84, 84, 84)
                 .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(SettingsCardLayout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(HTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(SettingsCardLayout.createSequentialGroup()
                                 .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(46, 46, 46)
                                 .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(SettingsCardLayout.createSequentialGroup()
-                                        .addGap(83, 83, 83)
-                                        .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SettingsCardLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(LTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(VLTemp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(TempButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(LTemp, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(VLTemp, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(TempButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(VHTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
                 .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(SettingsCardLayout.createSequentialGroup()
-                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(79, 79, 79)
+                        .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)))
+                                .addGap(79, 79, 79))
+                            .addGroup(SettingsCardLayout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(50, 50, 50)))
                         .addGroup(SettingsCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(VHHum)
                             .addComponent(HHum)
                             .addComponent(LHum)
-                            .addComponent(VLHum)
-                            .addComponent(HumidityBut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(HumidityBut, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(VLHum, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(212, 212, 212))
         );
         SettingsCardLayout.setVerticalGroup(
@@ -1588,7 +1591,7 @@ public class mainApp extends javax.swing.JFrame {
                             .addComponent(HumidityBut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(TempButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(LHerror, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(982, Short.MAX_VALUE))
+                .addContainerGap(1010, Short.MAX_VALUE))
         );
 
         cardLayouts.add(SettingsCard, "SettingsCard");
@@ -1623,7 +1626,7 @@ public class mainApp extends javax.swing.JFrame {
     }//GEN-LAST:event_SettingsButtonMousePressed
 
     private void StatisticsButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_StatisticsButtonMousePressed
-
+        
         card.show(cardLayouts, "StatisticCard");
         try {
             SelectionFromLeftNav(2);
@@ -1674,219 +1677,208 @@ public class mainApp extends javax.swing.JFrame {
 
     private void RecommendationTempButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RecommendationTempButtonMouseClicked
         giveTempAdvice();
+        RecommendationLabel1.setForeground(Color.WHITE);
         RecommendationLabel.setForeground(Color.YELLOW);
     }//GEN-LAST:event_RecommendationTempButtonMouseClicked
 
     private void RecommendationHumiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RecommendationHumiButtonMouseClicked
         giveHumiAdvice();
         RecommendationLabel1.setForeground(Color.YELLOW);
+        RecommendationLabel.setForeground(Color.WHITE);
     }//GEN-LAST:event_RecommendationHumiButtonMouseClicked
 
-    private void VHTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VHTempActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_VHTempActionPerformed
+    private void HumidityButMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMousePressed
+        
+        HumidityBut.setBackground(Default);
+        TempButton.setBackground(new Color(60,60,183));
+        jLabel5.setForeground(Color.white);
+        jLabel13.setForeground(Color.yellow);
+        int VHH=0, HH=0, LH=0, VLH=0; //Humidity levels
+        boolean errorVHH = true, errorHH = true, errorLH = true, errorVLH = true;
+        try{
+            VHH=Integer.parseInt(VHHum.getText());
+            VHHerror.setText("Humi set!");
+            VHHerror.setForeground(Color.green);
+            VHHum.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorVHH = false;
+            VHHerror.setText("Not a number");
+            VHHerror.setForeground(Color.red);
+            VHHum.setForeground(Color.red);
+        }
+        try{
+            HH=Integer.parseInt(HHum.getText());
+            HHerror.setText("Humi set!");
+            HHerror.setForeground(Color.green);
+            HHum.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorHH = false;
+            HHerror.setText("Not a number");
+            HHerror.setForeground(Color.red);
+            HHum.setForeground(Color.red);
+        }
+        try{
+            LH=Integer.parseInt(LHum.getText());
+            LHerror.setText("Humi set!");
+            LHerror.setForeground(Color.green);
+            LHum.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorLH = false;
+            LHerror.setText("Not a number");
+            LHerror.setForeground(Color.red);
+            LHum.setForeground(Color.red);
+        }
+        try{
+            VLH=Integer.parseInt(VLHum.getText());
+            VLHerror.setText("Humi set!");
+            VLHerror.setForeground(Color.green);
+            VLHum.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorVLH = false;
+            VLHerror.setText("Not a number");
+            VLHerror.setForeground(Color.red);
+            VLHum.setForeground(Color.red);
+        }
+
+        if( errorVHH && errorHH && errorLH && errorVLH ){
+
+            if(VHH < HH){
+                VHHerror.setText("Very high value is lower than high value.");
+                VHHerror.setForeground(Color.red);
+            }
+            if(HH < LH){
+                HHerror.setText("High value is lower than low value.");
+                HHerror.setForeground(Color.red);
+            }
+            if(LH < VLH){
+                LHerror.setText("Low value is lower than very low value.");
+                LHerror.setForeground(Color.red);
+            }
+            if(VHH > HH && HH > LH && LH > VLH){
+                HumiVeryHigh = VHH;
+                HumiHigh = HH;
+                HumiLow = LH;
+                HumiVeryLow = VLH;
+                CalcStats();
+            }
+        }
+
+    }//GEN-LAST:event_HumidityButMousePressed
+
+    private void HumidityButMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMouseExited
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_HumidityButMouseExited
+
+    private void HumidityButMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMouseEntered
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_HumidityButMouseEntered
 
     private void TempButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMousePressed
+        
+        TempButton.setBackground(Default);
+        HumidityBut.setBackground(new Color(60,60,183));
+        jLabel5.setForeground(Color.yellow);
+        jLabel13.setForeground(Color.white);
         int VHT=0, HT=0, LT=0, VLT=0; //temperature levels
+        boolean errorVHT = true, errorHT = true, errorLT = true, errorVLT = true;
         try{
-            try{
-                VHT=Integer.parseInt(VHTemp.getText());
-                VHerror.setText("Temp set!");
-                VHerror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                VHerror.setText("Not a number");
+            VHT=Integer.parseInt(VHTemp.getText());
+            VHerror.setText("Temp set!");
+            VHerror.setForeground(Color.green);
+            VHTemp.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorVHT = false;
+            VHerror.setText("Not a number");
+            VHerror.setForeground(Color.red);
+            VHTemp.setForeground(Color.red);
+        }
+        try{
+            HT=Integer.parseInt(HTemp.getText());
+            Herror.setText("Temp set!");
+            Herror.setForeground(Color.green);
+            HTemp.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorHT = false;
+            Herror.setText("Not a number");
+            Herror.setForeground(Color.red);
+            HTemp.setForeground(Color.red);
+        }
+        try{
+            LT=Integer.parseInt(LTemp.getText());
+            Lerror.setText("Temp set!");
+            Lerror.setForeground(Color.green);
+            LTemp.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorLT = false;
+            Lerror.setText("Not a number");
+            Lerror.setForeground(Color.red);
+            LTemp.setForeground(Color.red);
+        }
+        try{
+            VLT=Integer.parseInt(VLTemp.getText());
+            VLerror.setText("Temp set!");
+            VLerror.setForeground(Color.green);
+            VLTemp.setForeground(Color.white);
+        }
+        catch(NumberFormatException ex)
+        {
+            errorVLT = false;
+            VLerror.setText("Not a number");
+            VLerror.setForeground(Color.red);
+            VLTemp.setForeground(Color.red);
+        }
+
+        if( errorVHT && errorHT && errorLT && errorVLT ){
+
+            if(VHT < HT){
+                VHerror.setText("Very high value is lower than high value.");
                 VHerror.setForeground(Color.red);
             }
-            try{
-                HT=Integer.parseInt(HTemp.getText());
-                Herror.setText("Temp set!");
-                Herror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                Herror.setText("Not a number");
+            if(HT < LT){
+                Herror.setText("High value is lower than low value.");
                 Herror.setForeground(Color.red);
             }
-            try{
-                LT=Integer.parseInt(LTemp.getText());
-                Lerror.setText("Temp set!");
-                Lerror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                Lerror.setText("Not a number");
+            if(LT < VLT){
+                Lerror.setText("Low value is lower than very low value.");
                 Lerror.setForeground(Color.red);
             }
-            try{
-                VLT=Integer.parseInt(VLTemp.getText());
-                VLerror.setText("Temp set!");
-                VLerror.setForeground(Color.green);
+            if(VHT > HT && HT > LT && LT > VLT){
+                TempVeryHigh = VHT;
+                TempHigh = HT;
+                TempLow = LT;
+                TempVeryLow = VLT;
+                CalcStats();
             }
-            catch(NumberFormatException ex)
-            {
-                VLerror.setText("Not a number");
-                VLerror.setForeground(Color.red);
-            }
-            if(VHT>HT && LT>VLT)
-            {
-                if(VHT>LT)
-                {
-                    TempVeryHigh= VHT;
-                    TempHigh = HT;
-                    TempLow = LT;
-                    TempVeryLow = VLT;
-                    System.out.println("done "+VHT+" "+HT +" lt "+ LT + " VLT "+VLT);
-                }
-                else if(LT>VHT)
-                {
-                    Lerror.setForeground(Color.red);
-                    Lerror.setText("Low Temp cant be higher than Very high");
-                }
-                if(LT>HT)
-                {
-                    Lerror.setForeground(Color.red);
-                    Lerror.setText("Low Temp cant be higher than high");
-                }
-            }
-            else if(HT>VHT)
-            {
-                Herror.setForeground(Color.red);
-                Herror.setText("High temp cant be higher than Very High");
-                if(VLT>HT)
-                {
-                    VLerror.setForeground(Color.red);
-                    VLerror.setText("Very Low cant be higher than High");  
-                }
-                if(VLT>LT)
-                {
-                    Lerror.setForeground(Color.red);
-                    Lerror.setText("Low Temp cant be higher than High");
-                }
-            }
-            if(VLT>LT)
-            {
-                VLerror.setForeground(Color.red);
-                VLerror.setText("Very Low Temp cant be higher than Low");
-            }
-           
-        }catch(NumberFormatException ex)
-        {
-            System.out.println("Unexpected");
-        }   
-        
+        }
+
     }//GEN-LAST:event_TempButtonMousePressed
+
+    private void TempButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseExited
+        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_TempButtonMouseExited
 
     private void TempButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseEntered
 
         setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_TempButtonMouseEntered
 
-    private void TempButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempButtonMouseExited
-        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_TempButtonMouseExited
-
-    private void HumidityButMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMousePressed
-
-        int VHT=0, HT=0, LT=0, VLT=0; //temperature levels
-        try{
-            try{
-                VHT=Integer.parseInt(VHHum.getText());
-                VHHerror.setText("Humidity set!");
-                VHHerror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                VHHerror.setText("Not a number");
-                VHHerror.setForeground(Color.red);
-            }
-            try{
-                HT=Integer.parseInt(HHum.getText());
-                HHerror.setText("Humidity set!");
-                HHerror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                HHerror.setText("Not a number");
-                HHerror.setForeground(Color.red);
-            }
-            try{
-                LT=Integer.parseInt(LHum.getText());
-                LHerror.setText("Humidity set!");
-                LHerror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                LHerror.setText("Not a number");
-                LHerror.setForeground(Color.red);
-            }
-            try{
-                VLT=Integer.parseInt(VLHum.getText());
-                VLHerror.setText("Humidity set!");
-                VLHerror.setForeground(Color.green);
-            }
-            catch(NumberFormatException ex)
-            {
-                VLHerror.setText("Not a number");
-                VLHerror.setForeground(Color.red);
-            }
-            if(VHT>HT && LT>VLT)
-            {
-                if(VHT>LT)
-                {
-                    HumiVeryHigh= VHT;
-                    HumiHigh = HT;
-                    HumiLow = LT;
-                    HumiVeryLow = VLT;
-                    System.out.println("done "+VHT+" "+HT +" lt "+ LT + " VLT "+VLT);
-                }
-                else if(LT>VHT)
-                {
-                    LHerror.setForeground(Color.red);
-                    LHerror.setText("Low Hum cant be higher than Very high");
-                }
-                if(LT>HT)
-                {
-                    LHerror.setForeground(Color.red);
-                    LHerror.setText("Low Hum cant be higher than high");
-                }
-            }
-            else if(HT>VHT)
-            {
-                HHerror.setForeground(Color.red);
-                HHerror.setText("High Hum cant be higher than Very High");
-                if(VLT>HT)
-                {
-                    VLHerror.setForeground(Color.red);
-                    VLHerror.setText("Very Low cant be higher than High");  
-                }
-                if(VLT>LT)
-                {
-                    LHerror.setForeground(Color.red);
-                    LHerror.setText("Low Hum cant be higher than High");
-                }
-            }
-            if(VLT>LT)
-            {
-                VLHerror.setForeground(Color.red);
-                VLHerror.setText("Very Low Hum cant be higher than Low");
-            }
-           
-        }catch(NumberFormatException ex)
-        {
-            System.out.println("Unexpected");
-        }
-        
-    }//GEN-LAST:event_HumidityButMousePressed
-
-    private void HumidityButMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMouseEntered
-        setCursor(new Cursor(Cursor.HAND_CURSOR));     
-    }//GEN-LAST:event_HumidityButMouseEntered
-
-    private void HumidityButMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HumidityButMouseExited
-        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    }//GEN-LAST:event_HumidityButMouseExited
+    private void VHTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VHTempActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_VHTempActionPerformed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
